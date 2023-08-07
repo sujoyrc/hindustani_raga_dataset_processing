@@ -1,7 +1,7 @@
 This is the repository for multimodal processing of Hindustani Raga music. 
 
 To process the data in the repository:-
-1. Download the recordings from <<INSERT LINK>>
+1. Download the recordings from <<INSERT LINK>>. There is one sample recording available here and corresponding output files.
 2. Save the recordings in 00_data/00_orig_video
 3. Download the start and end times from << INSERT LINK >>
 4. Save the start and end times in 00_data/01_start_and_stop_times
