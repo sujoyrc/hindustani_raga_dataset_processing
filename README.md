@@ -6,7 +6,9 @@ To process the data in the repository:-
 3. Download the start and end times from << INSERT LINK >>
 4. Save the start and end times in 00_data/01_start_and_stop_times
 5. Create the Openpose json files using the instructions for
+   
      a) Installation in https://github.com/CMU-Perceptual-Computing-Lab/openpose#installation
+   
      b) Run commands from https://github.com/CMU-Perceptual-Computing-Lab/openpose#quick-start-overview
    These two steps should create a json file per frame per video. Store the json files in 01_json_files
 7. Alternatively download the json files from << INSERT LINK >> and save them in 01_json_files
@@ -22,6 +24,7 @@ To process the data in the repository:-
    The output of this process will create the pitch contours, silence delimited segments (SDS), stable notes, interpolated pitch contours based on stable notes.
 
    << 07 Aug 2023 - to be updated - codes for SDS, stable notes, interpolated pitch contours >>
+   
    This data is created separately for each recording. The data is sampled at 10ms intervals.
    
 9. Run the following
@@ -41,8 +44,11 @@ To process the data in the repository:-
      python process_multimodal_data.py
      ```
      This process does the following:-
+     
      a. Computes velocity (V) and accelaration (A) by a 101 point biphasic filter on the position (P) coordinates of keypoints of interest.
+     
      b. combines the pitch and gesture at 10ms intervals.
+     
      c. Creates a master file containing the gesture information (P+V+A) aligned with the pitch at 10ms intervals.
    
     
