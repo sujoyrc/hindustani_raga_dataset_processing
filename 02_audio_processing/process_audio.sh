@@ -28,7 +28,7 @@ USE_SINGER_SPECIFIC_TONICS="Y"
 USE_SPLEETER="Y"
 USE_PARSELMOUTH_ALL="Y"
 NORMALIZE_PITCH_CONTOURS="Y"
-
+# If spleeter is used
 if [[ $USE_SPLEETER == "Y" ]]
 then
     mkdir -p ${SPLIT_AUDIO_DIRECTORY}
@@ -68,7 +68,7 @@ then
         fi
     done
 fi
-
+# If we want to extract tonic for each file (not recommended)
 if [[ $USE_SINGER_SPECIFIC_TONICS == "N" ]]
 then
     TONIC_FOLDER=${TARGET_DIR}/"00_extracted_tonic_folder"

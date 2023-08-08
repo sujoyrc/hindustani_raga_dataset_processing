@@ -139,6 +139,11 @@ velocity_vector=["RWrist_vel","LWrist_vel","RElbow_vel","LElbow_vel"]
 acceleration_vector=["RWrist_accl","LWrist_accl","RElbow_accl","LElbow_accl"]
 
 def make_smoothed_vel_accln(each_pd):
+    '''
+    The biphasic filter will create x and y component wise velocity and acceleration with a negative value with respect to actual motion. 
+    For example when the hand is moving towards the right (positive ) then x is increasing but vel_x will be negative.
+    This is not important for our solution as we are using magnitude vector for velocity and acceleration.
+    '''
 
     each_pd_diff=each_pd[gesture_columns].apply(convolved_diff)  
     

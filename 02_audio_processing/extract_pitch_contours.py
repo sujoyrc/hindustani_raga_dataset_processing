@@ -79,7 +79,7 @@ def normalize_pitch(df, tonic, k):
         frequency_normalized = [np.round_(1200*math.log2(f/tonic)*(k/100)) if f>0 else -3000 for f in df['pitch']]
         df['pitch'] = frequency_normalized
         return df
-
+# number of inputs decide if we want a normalized or non-normalized pitch contour
 if len(sys.argv)==3:
     normalizeFlag=False
     audiofileName=sys.argv[1]
