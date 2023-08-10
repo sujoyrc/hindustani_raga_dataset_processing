@@ -82,9 +82,6 @@ for each_file_name in list_of_alap_files:
     else:
         num_rows_pitch=0
     
-    
-    
-       
     temp1_pd=temp_pd.merge(pitch_pd,on="time",how="left")
     temp1_pd['pitch']=temp1_pd['pitch'].interpolate(method='linear', limit_direction='both', axis=0)
         
@@ -95,7 +92,7 @@ for each_file_name in list_of_alap_files:
 
 gesture_pitch_pd=pd.concat(gesture_pitch_pd)
 
-gesture_pitch_pd.to_csv('../07_multimodal_processing_output/gesture_pitch_pd.csv',index=False)
+# gesture_pitch_pd.to_csv('../07_multimodal_processing_output/gesture_pitch_pd.csv',index=False)
 
 def get_biphasic(w,tu1,tu2,d1,d2):
     n=np.arange(-(w-1),w)
@@ -172,18 +169,24 @@ def make_smoothed_vel_accln(each_pd):
     columns_to_keep=list(each_pd.columns)+velocity_vector+acceleration_vector
     return each_pd_concat
 
-gesture_pitch_pd_with_vel_accln=[]
+
 count=0
 
 list_of_files=sorted(gesture_pitch_pd['filename'].unique())
 # print (len(list_of_files))
+list_of_singers=list(set([os.path.basename(x).split('_')[0] for x in list_of_files]))
 
+for each_singer in list_of_singers:
+    list_of_files_this_singer=[x for x in list_of_files if x.split('_')[0]==each_singer]
+    gesture_pitch_pd_with_vel_accln_this_singer=[]
 
-for each_file in list_of_files:
-    this_pd=gesture_pitch_pd[gesture_pitch_pd['filename']==each_file]
-    this_pd_vel_accln=make_smoothed_vel_accln(this_pd)
-    gesture_pitch_pd_with_vel_accln.append(this_pd_vel_accln)
+    for each_file in list_of_files_this_singer:
+        this_pd=gesture_pitch_pd[gesture_pitch_pd['filename']==each_file]
+        this_pd_vel_accln=make_smoothed_vel_accln(this_pd)
+        gesture_pitch_pd_with_vel_accln_this_singer.append(this_pd_vel_accln)
 
-gesture_pitch_pd_with_vel_accln=pd.concat(gesture_pitch_pd_with_vel_accln)
+    gesture_pitch_pd_with_vel_accln_this_singer=pd.concat(gesture_pitch_pd_with_vel_accln_this_singer)
 
-gesture_pitch_pd_with_vel_accln.to_csv('../07_multimodal_processing_output/gesture_pitch_pd_with_vel_accln.csv',index=False)
+    output_file_name='../07_multimodal_processing_output/gesture_pitch_pd_with_vel_accln_'+each_singer+'.csv'
+
+    gesture_pitch_pd_with_vel_accln_this_singer.to_csv(output_file_name,index=False)

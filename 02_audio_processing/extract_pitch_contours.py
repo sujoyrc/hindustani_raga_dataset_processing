@@ -90,26 +90,83 @@ else:
     output_directory=sys.argv[3]
     normalizeFlag=True
 
-sample_rate,array=wavfile.read(audiofileName)
+def interpolate_gaps(pitch_df, thresh=0.40  , kind='linear', unvoiced_frame_val=-3000):
+    '''
+    This function interpolates gaps in the pitch contour that are less than thresh s long.
+    Parameter
+        pitch_df (pd.DataFrame): TPE dataframe for song
+        thresh (float): duration (in s) below which the contour will be interpolated
+        kind (str): type of interpolation performed, passed as a parameter to scipy.interpolate.interp1d()
+        unvoiced_frame_val (int): value used to represent unvoiced frames
+    
+    Returns
+        pitch_df (pd.DataFrame): TPE dataframe with short gaps interpolated
+    '''
+    group_pitches = pitch_df.iloc[(np.diff(pitch_df['pitch'].values\
+        , prepend=np.nan) != 0).nonzero()][['time', 'pitch']].copy()
+    group_pitches['duration'] = np.diff(group_pitches['time'], append=(pitch_df.iloc[-1, 0]+0.1))
+    group_pitches['end time'] = group_pitches['time'] + group_pitches['duration']
+    pitch_vals = pitch_df['pitch'].values
+    
+    for ind, row in group_pitches.loc[(group_pitches['pitch'] == unvoiced_frame_val) & (group_pitches['duration'] < thresh)].iterrows():
+        # pdb.set_trace()
+        pitch_subset = pitch_df.loc[(pitch_df['time'] >= row['time']-0.1) & (pitch_df['time'] <= row['end time']+0.1) & (pitch_df['pitch'] != unvoiced_frame_val)]
+        # values given to the interpolate function
+        x_old = pitch_subset['time']
+        y_old = pitch_subset['pitch']
+        # interpolate function
+        try:
+            f = interp1d(x_old, y_old, kind=kind, fill_value="extrapolate", assume_sorted=True)
+        except:
+            warnings.warn(str(f'Skipping interpolating values between {x_old} and {y_old}'))
+            continue
+        # use function to find pitch values for short gaps
+        #pdb.set_trace()
+        y_new = f(pitch_df.loc[(pitch_df['time'] >= row['time']) & (pitch_df['time'] <= row['end time']), 'time'].values)
+        y_new[y_new <= -550] = -3000    # all values interpolated to values below -550 are set to unvoiced
+        y_new[y_new > 1950] = -3000    # all values interpolated to values above 1950 are set to unvoiced
+        pitch_vals[pitch_df.loc[(pitch_df['time'] >= row['time']) & (pitch_df['time'] <= row['end time'])].index.values] = y_new
+    pitch_df.loc[:, 'pitch'] = pitch_vals
+    return pitch_df
 
-print ("Normalize Flag",normalizeFlag)
-print ("Num arguments ",len(sys.argv)," argumnents ", sys.argv)
-if normalizeFlag:
-    pitch_contour_dir=output_directory
-else:
-    pitch_contour_dir=output_directory+"_Hz"
 
-print ("pitch contour dir is ",pitch_contour_dir)
-os.makedirs(pitch_contour_dir,exist_ok=True)
-output_file_name=os.path.basename(audiofileName).split('.')[0]+'.csv'
-output_file_name_full_path=os.path.join(pitch_contour_dir,output_file_name)
+def main(input_args):
 
-print ("Processing ",audiofileName," at ",datetime.datetime.now())
+    if len(input_args)==2:
+        normalizeFlag=False
+        audiofileName=input_args[1]
+    else:
+        audiofileName=input_args[1]
+        tonicfileName=input_args[2]
+        normalizeFlag=True
 
-if normalizeFlag:
-    with open(tonicfileName,'r') as f:
-        line=[line.rstrip() for line in f]
-    tonic=float(line[0])
-    pitchContour_df=pitch_contour(audiofileName,dest=output_file_name_full_path,tonic=tonic,normalize=normalizeFlag,sample_rate=sample_rate)
-else:
-    pitchContour_df=pitch_contour(audiofileName,dest=output_file_name_full_path,tonic=0,normalize=normalizeFlag,sample_rate=sample_rate)
+    sample_rate,array=wavfile.read(audiofileName)
+
+    print ("Normalize Flag",normalizeFlag)
+    print ("Num arguments ",len(sys.argv)," argumnents ", sys.argv)
+    if normalizeFlag:
+        pitch_contour_dir=output_directory
+    else:
+        pitch_contour_dir=output_directory+"_Hz"
+
+    print ("pitch contour dir is ",pitch_contour_dir)
+    os.makedirs(pitch_contour_dir,exist_ok=True)
+    output_file_name=os.path.basename(audiofileName).split('.')[0]+'.csv'
+    output_file_name_full_path=os.path.join(pitch_contour_dir,output_file_name)
+
+    print ("Processing ",audiofileName," at ",datetime.datetime.now())
+
+    if normalizeFlag:
+        with open(tonicfileName,'r') as f:
+            line=[line.rstrip() for line in f]
+        tonic=float(line[0])
+        pitchContour_df=pitch_contour(audiofileName,dest=None,tonic=tonic,normalize=normalizeFlag,sample_rate=sample_rate)
+        pitchContour_df=interpolate_gaps(pitchContour_df)
+        pitchContour_df.to_csv(output_file_name,index=False,header=True)
+    else:
+        pitchContour_df=pitch_contour(audiofileName,dest=None,tonic=0,normalize=normalizeFlag,sample_rate=sample_rate)
+        pitchContour_df.to_csv(output_file_name,index=False,header=True)
+
+if __name__=="__main__":
+    input_args=sys.argv
+    main(input_args)

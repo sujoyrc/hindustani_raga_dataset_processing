@@ -7,16 +7,11 @@
 #        2.  Source separation via Spleeter
 #        3.  Source separation using Audacity for some recordings - singers - AG/SCh/CC
 #        4.  Extraction of pitch contours using parselmouth - normalized using tonic values
-#        5.  Extraction of Silence Delimited Segments (SDS) and Stable Notes
-#        6.  Interpolation of pitch contours based on SDS
 # OUTPUTS
 #        1.  Extracted tonic per audio (if run)
 #        2.  Extracted source separated audio
 #        3.  Extracted pitch contour
-#        4.  Extracted SDS
-#        5.  Extracted Stable Notes
-#        6.  Interpolated pitch contour
-##
+#
 
 
 SOURCE_DIR="../00_data/02_audio_cropped"
