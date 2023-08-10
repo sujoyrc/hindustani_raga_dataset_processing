@@ -61,8 +61,8 @@ def pitch_contour(src=None, dest=None, tonic=None, k=100, sample_rate=16000, nor
         # pdb.set_trace()
         if normalize:
             df = normalize_pitch(df, tonic, k)  # normalize pitch values
-        if dest is not None:
-            df.to_csv(dest, header=True, index=False)
+        # if dest is not None:
+        #     df.to_csv(dest, header=True, index=False)
         return df
 
 def normalize_pitch(df, tonic, k):
@@ -162,10 +162,10 @@ def main(input_args):
         tonic=float(line[0])
         pitchContour_df=pitch_contour(audiofileName,dest=None,tonic=tonic,normalize=normalizeFlag,sample_rate=sample_rate)
         pitchContour_df=interpolate_gaps(pitchContour_df)
-        pitchContour_df.to_csv(output_file_name,index=False,header=True)
+        pitchContour_df.to_csv(output_file_name_full_path,index=False,header=True)
     else:
         pitchContour_df=pitch_contour(audiofileName,dest=None,tonic=0,normalize=normalizeFlag,sample_rate=sample_rate)
-        pitchContour_df.to_csv(output_file_name,index=False,header=True)
+        pitchContour_df.to_csv(output_file_name_full_path,index=False,header=True)
 
 if __name__=="__main__":
     input_args=sys.argv

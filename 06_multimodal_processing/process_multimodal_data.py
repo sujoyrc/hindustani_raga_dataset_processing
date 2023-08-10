@@ -78,6 +78,7 @@ for each_file_name in list_of_alap_files:
         temp_pd['time']=temp_pd['time']-round(start_time_crop,2)
 
     num_rows_gesture=temp_pd.shape[0]
+    print (each_file)
     if os.path.isfile(os.path.join(pitch_dir,os.path.basename(each_file))):
         pitch_pd=pd.read_csv(os.path.join(pitch_dir,os.path.basename(each_file)))
         pitch_pd=pitch_pd[['pitch','time']]

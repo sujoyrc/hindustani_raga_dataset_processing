@@ -38,9 +38,12 @@ To process the data in the repository:-
 
     ```
     cd 04_video_processing
-    python process_all_jsons_in_directory.py
+    ./run_gesture_keypoint_extraction.sh
     ```
     
+   Ensure the .sh files have execute (+x) permission for user in question.
+
+
    This process will create the gesture coordindates for each keypoint. It saves off the raw coordinates in pixel coordinates and normalized keypoints.
    The normalization for keypoints is z-score based for that keypoint across all frames of that video.
    Normalized keypoints are saved separately for all keypoints and of keypoints of interest ( Elbow and Wrist of both hands).
