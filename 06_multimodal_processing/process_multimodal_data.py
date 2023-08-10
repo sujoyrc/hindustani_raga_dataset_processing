@@ -11,8 +11,8 @@ from collections import Counter
 import os
 import matplotlib.ticker as ticker
 
-with open('../00_data/00_orig_video/older_files_rename_mapping.pkl','rb') as f:
-    rename_files_mapping=pickle.load(f)
+# with open('../00_data/00_orig_video/older_files_rename_mapping.pkl','rb') as f:
+#     rename_files_mapping=pickle.load(f)
 
 # os.chdir('../05_video_processing_output/pose_keypoints_dir/')
 pose_keypoints_dir='../05_video_processing_output/pose_keypoints_dir/'
@@ -26,23 +26,23 @@ list_of_files=sorted([x for x in list_of_files if not re.search('Right',x)])
 
 ## May remove if source files renamed
 
-rename_files_mapping['AG_P1_Bag.csv']='AG_Pakad_Bag.csv'
-rename_files_mapping['AG_P1_Bahar.csv']='AG_Pakad_Bahar.csv'
-rename_files_mapping['AG_P1_Bilas.csv']='AG_Pakad_Bilas.csv'
-rename_files_mapping['AG_P1_Kedar.csv']='AG_Pakad_Kedar.csv'
-rename_files_mapping['AG_P1_Marwa.csv']='AG_Pakad_Marwa.csv'
-rename_files_mapping['AG_P1_Nand.csv']='AG_Pakad_Nand.csv'
-rename_files_mapping['AG_P1_Shree.csv']='AG_Pakad_Shree.csv'
-rename_files_mapping['AG_P1_Jaun.csv']='AG_Pakad_Jaun.csv'
-rename_files_mapping['CC_P8_Bahar.csv']='CC_Pakad_Bahar.csv'
-rename_files_mapping['SCh_P4b_Nand.csv']='SCh_Pakad2_Nand.csv'
-rename_files_mapping['SCh_P4b_Nand_.csv']='SCh_Pakad2_Nand.csv'
+# rename_files_mapping['AG_P1_Bag.csv']='AG_Pakad_Bag.csv'
+# rename_files_mapping['AG_P1_Bahar.csv']='AG_Pakad_Bahar.csv'
+# rename_files_mapping['AG_P1_Bilas.csv']='AG_Pakad_Bilas.csv'
+# rename_files_mapping['AG_P1_Kedar.csv']='AG_Pakad_Kedar.csv'
+# rename_files_mapping['AG_P1_Marwa.csv']='AG_Pakad_Marwa.csv'
+# rename_files_mapping['AG_P1_Nand.csv']='AG_Pakad_Nand.csv'
+# rename_files_mapping['AG_P1_Shree.csv']='AG_Pakad_Shree.csv'
+# rename_files_mapping['AG_P1_Jaun.csv']='AG_Pakad_Jaun.csv'
+# rename_files_mapping['CC_P8_Bahar.csv']='CC_Pakad_Bahar.csv'
+# rename_files_mapping['SCh_P4b_Nand.csv']='SCh_Pakad2_Nand.csv'
+# rename_files_mapping['SCh_P4b_Nand_.csv']='SCh_Pakad2_Nand.csv'
 
 ## May remove if source files renamed
-list_of_files_old=[q for q in list_of_files if (q.split('_')[0] in ['AG','CC','SCh'])]
-list_of_files_new=[q for q in list_of_files if (q.split('_')[0] not in ['AG','CC','SCh'])]
-# [x for x in list_of_files if (x.split('_')[0] not in ['AG','CC','SCh']) & (re.search('Pakad',x))]
-list_of_files=list_of_files_old+list_of_files_new
+# list_of_files_old=[q for q in list_of_files if (q.split('_')[0] in ['AG','CC','SCh'])]
+# list_of_files_new=[q for q in list_of_files if (q.split('_')[0] not in ['AG','CC','SCh'])]
+# # [x for x in list_of_files if (x.split('_')[0] not in ['AG','CC','SCh']) & (re.search('Pakad',x))]
+# list_of_files=list_of_files_old+list_of_files_new
 
 list_of_alap_files=sorted(list_of_files)
 
@@ -51,16 +51,19 @@ for each_file_name in list_of_alap_files:
     new_file_flag=''
     singer=each_file_name.split('_')[0]
     
-    if singer in ('AG','CC','SCh'):
-        each_file=re.sub('_C_pose','',each_file_name)
-    else:
-        each_file=re.sub('_pose','',each_file_name)
+    # if singer in ('AG','CC','SCh'):
+    #     each_file=re.sub('_C_pose','',each_file_name)
+    # else:
+    each_file=re.sub('_pose','',each_file_name)
         
-    if each_file in rename_files_mapping.keys():
-        each_file=rename_files_mapping[each_file]
-    else:
-        each_file=each_file
-        with open(os.path.join(start_end_time_directory,re.sub('csv','txt',os.path.basename(each_file))),'r') as f:
+    # if each_file in rename_files_mapping.keys():
+    #     each_file=rename_files_mapping[each_file]
+    # else:
+        # each_file=each_file
+
+    start_end_time_mapping_file=os.path.join(start_end_time_directory,re.sub('_Front.csv','.txt',os.path.basename(each_file)))
+    if os.path.isfile(start_end_time_mapping_file):
+        with open(start_end_time_mapping_file,'r') as f:
             lines = [line.rstrip() for line in f]
             start_time_crop=float(lines[0].split('\t')[0])
             end_time_crop=float(lines[0].split('\t')[1])

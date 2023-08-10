@@ -38,7 +38,7 @@ To process the data in the repository:-
 
     ```
     cd 04_video_processing
-    python process_all_jsons_in_directory v2.1.py
+    python process_all_jsons_in_directory.py
     ```
     
    This process will create the gesture coordindates for each keypoint. It saves off the raw coordinates in pixel coordinates and normalized keypoints.

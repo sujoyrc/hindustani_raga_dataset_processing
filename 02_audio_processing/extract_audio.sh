@@ -29,7 +29,7 @@ do
     start=`cat $each_start_stop_file | awk '{print $1}'`
     end=`cat $each_start_stop_file | awk '{print $2}'`
     #
-    corresponding_wav_file_name=`basename $each_start_stop_file | sed -e 's/txt/wav/g'`   
+    corresponding_wav_file_name=`basename $each_start_stop_file | sed -e 's/.txt/_Front.wav/g'`   
     original_wav_file=${OUTPUT_CROPPED_AUDIO_DIRECTORY}/${corresponding_wav_file_name}
     temp_renamed_file=`echo $original_wav_file | sed -e 's/.wav/_uncropped.wav/g'`
     mv $original_wav_file $temp_renamed_file
