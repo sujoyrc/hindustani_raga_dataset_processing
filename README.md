@@ -4,11 +4,17 @@ The dataset consists of recordings by 11 singers for 9 ragas.
 The mp4 files have a naming convention of <Singer_Name>_<Performance_Type>_<Raga_name>_<View>.mp4
 
 The document << INSERT LINK >> has the summary statistics of the recodings.
+Before you start
+```
+git clone git@github.com:sujoyrc/hindustani_raga_dataset_processing.git
+cd hindustani_raga_dataset_processing
+```
 
 To process the data in the repository:-
 1. Run the following
 ```
-cd 00_data/00_orig_video
+export ROOT_DIR=`$PWD`
+cd ${ROOT_DIR}/00_data/00_orig_video
 ./download_mp4.sh
 ```
 Ensure download_mp4.sh has execute permission
@@ -31,7 +37,7 @@ Ensure download_mp4.sh has execute permission
 7. Run the following
 
   ```
-   cd 02_audio_processing
+   cd ${ROOT_DIR}/02_audio_processing
    ./extract_audio.sh
    ./process_audio.sh
    ```
@@ -46,7 +52,7 @@ Ensure download_mp4.sh has execute permission
 8. Run the following
 
     ```
-    cd 04_video_processing
+    cd ${ROOT_DIR}/04_video_processing
     ./run_gesture_keypoint_extraction.sh
     ```
     
@@ -60,7 +66,7 @@ Ensure download_mp4.sh has execute permission
 
 9. Run the following
      ```
-     cd 06_multimodal_processing
+     cd ${ROOT_DIR}/06_multimodal_processing
      python process_multimodal_data.py
      ```
 
