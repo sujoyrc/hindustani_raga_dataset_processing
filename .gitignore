@@ -1,3 +1,4 @@
 *.json
+extracted_from_tarGz
 *.mp4
 pretrained_models
