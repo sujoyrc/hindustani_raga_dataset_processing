@@ -6,6 +6,13 @@ The mp4 files have a naming convention of <Singer_Name>_<Performance_Type>_<Raga
 The document << INSERT LINK >> has the summary statistics of the recodings.
 
 To process the data in the repository:-
+1. Run the following
+```
+cd 00_data/00_orig_video
+./download_mp4.sh
+```
+Ensure download_mp4.sh has execute permission
+
 2. Download the recordings from << INSERT LINK >> . This link has only the Front view files. 
 3. Save the recordings in 00_data/00_orig_video
 4. Download the json files from << INSERT LINK >> and save them in 01_json_files
