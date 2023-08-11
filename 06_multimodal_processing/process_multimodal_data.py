@@ -191,6 +191,6 @@ for each_singer in list_of_singers:
 
     gesture_pitch_pd_with_vel_accln_this_singer=pd.concat(gesture_pitch_pd_with_vel_accln_this_singer)
 
-    output_file_name='../07_multimodal_processing_output/gesture_pitch_pd_with_vel_accln_'+each_singer+'.csv'
+    output_file_name='../07_multimodal_processing_output/'+each_singer+'_gesture_pitch_pd_with_vel_accln.csv'
 
     gesture_pitch_pd_with_vel_accln_this_singer.to_csv(output_file_name,index=False)

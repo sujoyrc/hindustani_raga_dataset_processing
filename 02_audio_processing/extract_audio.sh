@@ -11,12 +11,11 @@ INPUT_VIDEO_DIRECTORY="../00_data/00_orig_video"
 INPUT_START_AND_STOP_TIMES="../00_data/01_start_and_stop_times"
 OUTPUT_CROPPED_AUDIO_DIRECTORY="../00_data/02_audio_cropped"
 
-#chmod +x ${INPUT_VIDEO_DIRECTORY}/download_mp4.sh
-#sh ${INPUT_VIDEO_DIRECTORY}/download_mp4.sh
-
 for each_file in `ls $INPUT_VIDEO_DIRECTORY/*.mp4`
 do
-    source_file_name=`echo $INPUT_VIDEO_DIRECTORY/$each_file`
+    each_file=`basename $each_file`
+    source_file_name=`echo ${INPUT_VIDEO_DIRECTORY}/$each_file`
+    echo "Processing "$source_file_name
     #echo $source_file_name
     temp_file_name=`echo $OUTPUT_CROPPED_AUDIO_DIRECTORY/$each_file | sed -e 's/.mp4/.aac/'`
     ffmpeg -i $source_file_name -vn -acodec copy $temp_file_name
