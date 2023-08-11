@@ -6,9 +6,9 @@ The mp4 files have a naming convention of <Singer_Name>_<Performance_Type>_<Raga
 The document << INSERT LINK >> has the summary statistics of the recodings.
 
 To process the data in the repository:-
-1. Download the recordings from << INSERT LINK >> . This link has only the Front view files. 
-2. Save the recordings in 00_data/00_orig_video
-3. Download the json files from << INSERT LINK >> and save them in 01_json_files
+2. Download the recordings from << INSERT LINK >> . This link has only the Front view files. 
+3. Save the recordings in 00_data/00_orig_video
+4. Download the json files from << INSERT LINK >> and save them in 01_json_files
   
    *Alternatively*, create the Openpose json files using the instructions for
    
@@ -17,11 +17,11 @@ To process the data in the repository:-
      b) Run commands from https://github.com/CMU-Perceptual-Computing-Lab/openpose#quick-start-overview
    These two steps should create a json file per frame per video. Store the json files in 01_json_files
 
-4. Download the start and end times from << INSERT LINK >>. This is present for most videos (except those by singers AG, CC, SCh) and has the start and end time of the actual performance. There is one text file per performance and has the start time and end time.
+5. Download the start and end times from << INSERT LINK >>. This is present for most videos (except those by singers AG, CC, SCh) and has the start and end time of the actual performance. There is one text file per performance and has the start time and end time.
 
-5. Save the start and end times in 00_data/01_start_and_stop_times
+6. Save the start and end times in 00_data/01_start_and_stop_times
 
-6. Run the following
+7. Run the following
 
   ```
    cd 02_audio_processing
@@ -36,7 +36,7 @@ To process the data in the repository:-
   
    This data is created separately for each recording. The data is sampled at 10ms intervals.
    
-7. Run the following
+8. Run the following
 
     ```
     cd 04_video_processing
@@ -51,7 +51,7 @@ To process the data in the repository:-
    Normalized keypoints are saved separately for all keypoints and of keypoints of interest ( Elbow and Wrist of both hands).
    This data is created separately for each recording. The data is sampled at 10ms intervals.
 
-8. Run the following
+9. Run the following
      ```
      cd 06_multimodal_processing
      python process_multimodal_data.py
