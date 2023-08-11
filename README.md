@@ -8,6 +8,7 @@ Before you start
 ```
 git clone git@github.com:sujoyrc/hindustani_raga_dataset_processing.git
 cd hindustani_raga_dataset_processing
+pip install -r requirements.txt
 ```
 
 To process the data in the repository:-
