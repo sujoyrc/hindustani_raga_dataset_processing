@@ -6,7 +6,7 @@ The mp4 files have a naming convention of <Singer_Name>_<Performance_Type>_<Raga
 The document << INSERT LINK >> has the summary statistics of the recodings.
 
 To process the data in the repository:-
-1. Download the recordings from << INSERT LINK >>  There is one sample recording available here in this repo and corresponding output files. This link only has the <<Front>> view
+1. Download the recordings from << INSERT LINK >> . This link has only the Front view files. 
 2. Save the recordings in 00_data/00_orig_video
 3. Download the json files from << INSERT LINK >> and save them in 01_json_files
   
@@ -28,6 +28,8 @@ To process the data in the repository:-
    ./extract_audio.sh
    ./process_audio.sh
    ```
+   The extract_audio.sh code downloads one sample recording. This repository has corresponding output files for this recording. 
+
    Ensure the .sh files have execute (+x) permission for user in question.
 
    The output of this process will create the pitch contours. Unvoiced segments less than 400 ms are interpolated by a linear interpolation.

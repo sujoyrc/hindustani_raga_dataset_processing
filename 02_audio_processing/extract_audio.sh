@@ -11,6 +11,9 @@ INPUT_VIDEO_DIRECTORY="../00_data/00_orig_video"
 INPUT_START_AND_STOP_TIMES="../00_data/01_start_and_stop_times"
 OUTPUT_CROPPED_AUDIO_DIRECTORY="../00_data/02_audio_cropped"
 
+chmod +x ${INPUT_VIDEO_DIRECTORY}/download_mp4.sh
+sh ${INPUT_VIDEO_DIRECTORY}/download_mp4.sh
+
 for each_file in `ls $INPUT_VIDEO_DIRECTORY`
 do
     source_file_name=`echo $INPUT_VIDEO_DIRECTORY/$each_file`
