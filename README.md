@@ -14,7 +14,7 @@ pip install -r requirements.txt
 To process the data in the repository:-
 1. Run the following
 ```
-export ROOT_DIR=`$PWD`
+export ROOT_DIR=`echo $PWD`
 cd ${ROOT_DIR}/00_data/00_orig_video
 ./download_mp4.sh
 ```
