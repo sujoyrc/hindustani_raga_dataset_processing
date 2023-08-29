@@ -52,7 +52,7 @@ then
     do
         echo "Running for $each_file"
         inputfile=${SPLIT_AUDIO_DIRECTORY}/$each_file
-        singer_name=`basename $each_file | cut -c1-2`
+        singer_name=`basename $each_file | awk -F"_" '{print $1}'`
         tonic_file_name=${singer_name}_tonic.txt
         tonicfilename_full_path=$TONIC_FOLDER/$tonic_file_name
         if [[ $NORMALIZE_PITCH_CONTOURS == "Y" ]]
