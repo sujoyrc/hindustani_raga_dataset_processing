@@ -165,8 +165,9 @@ class ProcessKeyPoints(object):
         '''
         output_list=[]
         names=[]
+        # print (list_of_kepoints)
         keypoints=list_of_kepoints[0].keys()
-        #print (keypoints)
+        # print (keypoints)
         #print (list_of_kepoints[0:5])
         timeseries_input=[x['time'] for x in list_of_kepoints]
         for each_keypoint in keypoints:
@@ -280,12 +281,13 @@ class ProcessKeyPoints(object):
 
 
     def make_time_series(self,directory_to_process_full_name,fps,save=False):
+        # print (directory_to_process_full_name)
         directory_to_process=os.path.basename(directory_to_process_full_name)
         directory_to_process=re.sub(' ','_',directory_to_process)
         directory_to_process=re.sub('\(','_',directory_to_process)
         directory_to_process=re.sub('\)','_',directory_to_process)
         list_of_files=sorted([os.path.join(directory_to_process_full_name,x) for x in os.listdir(directory_to_process_full_name)])
-        list_of_files=[x for x in list_of_files if re.search('P',x)]
+        list_of_files=[x for x in list_of_files]
         # files_missing=[ 'SCh_Pakad1_Bag.csv',
         #                 'SCh_Pakad1_Bahar.csv',
         #                 'SCh_Pakad2_Bahar.csv',
@@ -317,16 +319,19 @@ class ProcessKeyPoints(object):
             hand_left_keypoints_list.append(hand_left_keypoints_2d)
             hand_right_keypoints_list.append(hand_right_keypoints_2d)
             frame_number=frame_number+1
+        
         pose_keypoints_pd=self.do_interpolate_and_lpf(pose_keypoints_list,'body') #pd.DataFrame(pose_keypoints_list)
-        hand_left_keypoints_pd=self.do_interpolate_and_lpf(hand_left_keypoints_list,'Left_hand') #pd.DataFrame(hand_left_keypoints_list)
-        hand_right_keypoints_pd=self.do_interpolate_and_lpf(hand_right_keypoints_list,'Right_hand') #pd.DataFrame(hand_right_keypoints_list)
+        # print ("Here")
+        # hand_left_keypoints_pd=self.do_interpolate_and_lpf(hand_left_keypoints_list,'Left_hand') #pd.DataFrame(hand_left_keypoints_list)
+        # hand_right_keypoints_pd=self.do_interpolate_and_lpf(hand_right_keypoints_list,'Right_hand') #pd.DataFrame(hand_right_keypoints_list)
+        
         if save:
             output_file_pose=os.path.join(self.output_dir_pose,directory_to_process.strip()+'_pose.csv')
             output_file_all_non_normalized=os.path.join(self.output_dir_all_non_normalized,directory_to_process.strip()+'_all_nonnormalized.csv')
             output_file_all=os.path.join(self.output_dir_all,directory_to_process.strip()+'_all.csv')
-            hand_left_keypoints_pd.drop(['frame_number','time'], axis=1,inplace=True)
-            hand_right_keypoints_pd.drop(['frame_number','time'], axis=1,inplace=True)
-            output_pd_all=pd.concat([pose_keypoints_pd,hand_left_keypoints_pd,hand_right_keypoints_pd],axis=1)    
+            # hand_left_keypoints_pd.drop(['frame_number','time'], axis=1,inplace=True)
+            # hand_right_keypoints_pd.drop(['frame_number','time'], axis=1,inplace=True)
+            output_pd_all=pose_keypoints_pd #pd.concat([pose_keypoints_pd,hand_left_keypoints_pd,hand_right_keypoints_pd],axis=1)    
             output_pd_all.to_csv(output_file_all_non_normalized,index=False,float_format='%.3f')
             output_pd_resampled=self.resample_dataframe(output_pd_all)
             output_pd_normalized=self.normalize_data_zscore(output_pd_resampled)

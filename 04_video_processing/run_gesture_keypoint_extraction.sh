@@ -6,7 +6,7 @@ output_directory='../05_video_processing_output/'
 
 mkdir -p ${tar_extracted_directory}
 
-for each_tar_gz in `ls ${json_dir}/*.tar.gz`
+for each_tar_gz in `ls -1 ${json_dir}/*.tar.gz`
 do
     echo ${each_tar_gz}
     tar -zxvf ${json_dir}/${each_tar_gz} --directory ${tar_extracted_directory}
