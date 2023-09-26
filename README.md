@@ -3,7 +3,13 @@ This is the repository for multimodal processing of Hindustani Raga music.
 The dataset consists of recordings by 11 singers for 9 ragas.
 The mp4 files have a naming convention of <Singer_Name>_<Performance_Type>_<Raga_name>_<View>.mp4
 
-The document << INSERT LINK >> has the summary statistics of the recodings.
+Preparation of virtual environment
+cd to the directory where you want to install a python virtual environment
+```
+python -m venv .
+source bin/activate
+```
+
 Before you start
 ```
 git clone git@github.com:sujoyrc/hindustani_raga_dataset_processing.git
@@ -18,7 +24,10 @@ export ROOT_DIR=`echo $PWD`
 cd ${ROOT_DIR}/00_data/00_orig_video
 ./download_mp4.sh
 ```
-Ensure download_mp4.sh has execute permission
+Ensure download_mp4.sh has execute permission. Note that download_mp4.sh only downloads one sample file. 
+This repository has corresponding output files for this recording. 
+
+Rest of the files you need to download from the links below.
 
 2. Download the recordings from << INSERT LINK >> . This link has only the Front view files. 
 3. Save the recordings in 00_data/00_orig_video
@@ -33,7 +42,7 @@ Ensure download_mp4.sh has execute permission
 
 5. Download the start and end times from << INSERT LINK >>. This is present for most videos (except those by singers AG, CC, SCh) and has the start and end time of the actual performance. There is one text file per performance and has the start time and end time.
 
-6. Save the start and end times in 00_data/01_start_and_stop_times
+6. Save the start and end times in directory 00_data/01_start_and_stop_times
 
 7. Run the following
 
@@ -42,13 +51,11 @@ Ensure download_mp4.sh has execute permission
    ./extract_audio.sh
    ./process_audio.sh
    ```
-   The extract_audio.sh code downloads one sample recording. This repository has corresponding output files for this recording. 
-
+  
    Ensure the .sh files have execute (+x) permission for user in question.
 
-   The output of this process will create the pitch contours. Unvoiced segments less than 400 ms are interpolated by a linear interpolation.
-  
-   This data is created separately for each recording. The data is sampled at 10ms intervals.
+   The output of this process will create the pitch contours at 10 ms intervals. Unvoiced segments less than 400 ms are interpolated by a linear interpolation.
+   There will be a separate output csv file for each recording present in 00_data/00_orig_video
    
 8. Run the following
 
