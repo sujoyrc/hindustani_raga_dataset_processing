@@ -67,12 +67,13 @@ Rest of the files you need to download from the links below.
    Ensure the .sh files have execute (+x) permission for user in question.
 
 
-   This process will create the gesture coordindates for each keypoint. It saves off the raw coordinates in pixel coordinates and normalized keypoints.
-   The normalization for keypoints is z-score based for that keypoint across all frames of that video.
-   Normalized keypoints are saved separately for all keypoints and of keypoints of interest ( Elbow and Wrist of both hands).
-   This data is created separately for each recording. The data is sampled at 10ms intervals.
+   This process will create the gesture coordindates for each keypoint.
+   There are three output folders in this processing:-
+   a) keypoints_non_normalized - this has one file per recording having all 25 Openpose keypoints in pixel coordinates
+   b) keypoints_all - this has one file per recording having all 25 Openpose keypoints followed by z-score normalization
+   c) pose_keypoints_dir - this has one file per recording having only the keypoints for wrist and elbow of both hands. This is the only data used in the next step
 
-9. Run the following
+10. Run the following
      ```
      cd ${ROOT_DIR}/06_multimodal_processing
      python process_multimodal_data.py
