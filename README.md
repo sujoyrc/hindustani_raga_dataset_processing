@@ -69,6 +69,7 @@ Rest of the files you need to download from the links below.
 
    This process will create the gesture coordindates for each keypoint.
    There are three output folders in this processing:-
+   
    a) keypoints_non_normalized - this has one file per recording having all 25 Openpose keypoints in pixel coordinates
    
    b) keypoints_all - this has one file per recording having all 25 Openpose keypoints followed by z-score normalization
@@ -88,5 +89,7 @@ Rest of the files you need to download from the links below.
      b. Using the start and end times (where relevant) the process removes gesture information outside start and end time intervals and resets the time for the gesture information to zero corresponding to the start time. Then it combines the pitch and gesture for a certain video information based on the adjusted time.
      
      c. Creates a master file per singer containing the gesture information (P+V+A) aligned with the pitch at 10ms intervals.
-   
     
+![sampleRows (1)](https://github.com/sujoyrc/hindustani_raga_dataset_processing/assets/8533584/b2d14ef2-a6ee-47e6-8976-1209f0061528)
+   
+Above screenshot shows a sample of the master file - only columns for right wrist are shown here. There would be similar columns for left wrist and both elbows.
