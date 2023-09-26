@@ -70,7 +70,9 @@ Rest of the files you need to download from the links below.
    This process will create the gesture coordindates for each keypoint.
    There are three output folders in this processing:-
    a) keypoints_non_normalized - this has one file per recording having all 25 Openpose keypoints in pixel coordinates
+   
    b) keypoints_all - this has one file per recording having all 25 Openpose keypoints followed by z-score normalization
+   
    c) pose_keypoints_dir - this has one file per recording having only the keypoints for wrist and elbow of both hands. This is the only data used in the next step
 
 10. Run the following
