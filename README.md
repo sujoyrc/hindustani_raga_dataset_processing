@@ -1,7 +1,7 @@
 This is the repository for multimodal processing of Hindustani Raga music. 
 
 The dataset consists of recordings by 11 singers for 9 ragas.
-The mp4 files have a naming convention of <Singer_Name>_<Performance_Type>_<Raga_name>_<View>.mp4
+The mp4 files have a naming convention of <Singer_Name>_<Performance_Type>_<Raga_name>_\<View\>.mp4
 
 Preparation of virtual environment
 cd to the directory where you want to install a python virtual environment
