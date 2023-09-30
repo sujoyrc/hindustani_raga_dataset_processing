@@ -8,19 +8,19 @@ The dataset consists of recordings by 11 singers (5 Male,6 Female) performing 9 
 Singers with the following abbreviations are male:-  CC, AK, MG, MP, NM\
 Singers with the following abbreviations are female:- AG, SCh, AP, RV, SS, SM
 
-Ragas used in the recordings and the pitch sets employed by the nine ragas. Lower case letters refer to the lower (flatter) alternative and upper case to the higher (sharper) pitch in each case. Some ragas are abbreviated and abbreviations given in parenthesis.
+Following are the ragas used in the recordings. Some ragas are abbreviated.
 
-| **Raga**             | **Scale**          |
+| **Raga**             | **Abbreviation**          |
 |----------------------|--------------------|
-| Bageshree (Bag)      | S R g m P D n      |
-| Bahar                | S R g m P D n N    |
-| Bilaskhani Todi (Bilas) | S r g m P d n  |
-| Jaunpuri (Jaun)      | S R g m P d n      |
-| Kedar                | S R G m M P D N    |
-| Marwa                | S r G M D N        |
-| Miyan ki Malhar (MM) | S R g m P D n N    |
-| Nand                 | S R G m M P D N    |
-| Shree                | S r G M P d N      |
+| Bageshree      | Bag      |
+| Bahar                |     |
+| Bilaskhani Todi (Bilas) | Bilas  |
+| Jaunpuri (Jaun)      |       |
+| Kedar                |     |
+| Marwa                |        |
+| Miyan ki Malhar (MM) | MM    |
+| Nand                 |     |
+| Shree                |       |
 
 The metadata for the recording is
 
