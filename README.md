@@ -114,7 +114,8 @@ These two steps should create a json file per frame per video. Store the json fi
 
 2b. Download all the recordings from << INSERT LINK >> . This link has the recordings for all 3 views
 3b. Save the recordings in 00_data/00_orig_video
-4b. Download the output files of VideoPose 3D from << INSERT LINK >> and save them in `01_VideoPose3D_output`. Alternatively, create the 3D output for VideoPose3D by following the instructions in [VideoPose3D: Inference in the Wild](https://github.com/facebookresearch/VideoPose3D/blob/main/INFERENCE.md). Note that each recording with the detections of 3 views should be made into a separate custom dataset.
+4b. Download the output files of VideoPose 3D from << INSERT LINK >> and save them in `01_VideoPose3D_output`. 
+*Alternatively*, create the 3D output for VideoPose3D by following the instructions in [VideoPose3D: Inference in the Wild](https://github.com/facebookresearch/VideoPose3D/blob/main/INFERENCE.md). Note that each recording with the detections of 3 views should be made into a separate custom dataset.
 .
    
 
