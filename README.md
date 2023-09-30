@@ -41,7 +41,7 @@ The mp4 files have a naming convention of <Singer_Name\>\_\<Performance_Type\>\_
 
 The repository can process both single-view recordings as well as recordings from multiple views. The following diagrams give the process for 2D and 3D.
 
-| ![Processing with front view camera only](process.png) | ![Processing with all 3 views](Process3D.png) |
+| ![Processing with front view camera only](process2D.png) | ![Processing with all 3 views](Process3D.png) |
 |:---:|:---:|
 | Processing with front view camera only | Processing with all 3 view cameras |
 
