@@ -26,8 +26,7 @@ The metadata for the recording is
 
 |                     | **Metadata Type** | **Metadata**      |
 |---------------------|-------------------|-------------------|
-| **Audio Metadata**  | File Type         | wav               |
-|                     | Sample Rate       | 48000 Hz          |
+| **Audio Metadata**  | Sample Rate       | 48000 Hz          |
 |                     | Bit Depth         | 24 bit            |
 |                     | Audio Codec       | AAC               |
 | **Video Metadata**  | Format            | MP4               |
