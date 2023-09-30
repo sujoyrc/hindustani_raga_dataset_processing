@@ -103,9 +103,9 @@ Rest of the files you need to download from the links below.
 4a. Download the json files from << INSERT LINK >> and save them in 01_openpose_output. This will be downloaded as one tar.json.gz file per recording.
   *Alternatively*, create the Openpose json files using the instructions for
    
-a) [Openpose Installation](https://github.com/CMU-Perceptual-Computing-Lab/openpose#installation)
+ [Openpose Installation](https://github.com/CMU-Perceptual-Computing-Lab/openpose#installation)
    
-b) [Openpose Quick Start Overview](https://github.com/CMU-Perceptual-Computing-Lab/openpose#quick-start-overview)
+ [Openpose Quick Start Overview](https://github.com/CMU-Perceptual-Computing-Lab/openpose#quick-start-overview)
    
 These two steps should create a json file per frame per video. Store the json files in `01_json_files`.
 
