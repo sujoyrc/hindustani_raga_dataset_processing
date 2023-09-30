@@ -39,7 +39,16 @@ Note that the recordings for singers AG,CC, SCh is 25 fps.
 
 The mp4 files have a naming convention of <Singer_Name\>\_\<Performance_Type\>\_\<Raga_name\>\_\<View\>.mp4
 
-The repository can process both single-view recordings as well as recordings from multiple views.
+The repository can process both single-view recordings as well as recordings from multiple views. The following diagrams give the process for 2D and 3D.
+
+<p align="center">
+  <img src="process.png" width="45%" alt="Processing with front view camera only"/>
+  <img src="Process3D.png" width="45%" alt="Processing with all 3 view cameras"/>
+</p>
+<p align="center">
+  Caption for the images
+</p>
+
 
 If you want the final processed master file - one per singer - please download them from << INSERT LINK >>
 
