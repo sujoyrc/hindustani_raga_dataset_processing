@@ -22,14 +22,26 @@ Ragas used in the recordings and the pitch sets employed by the nine ragas. Lowe
 | Nand                 | S R G m M P D N    |
 | Shree                | S r G M P d N      |
 
+The metadata for the recording is
 
+|                     | **Metadata Type** | **Metadata**      |
+|---------------------|-------------------|-------------------|
+| **Audio Metadata**  | File Type         | wav               |
+|                     | Sample Rate       | 48000 Hz          |
+|                     | Bit Depth         | 24 bit            |
+|                     | Audio Codec       | AAC               |
+| **Video Metadata**  | Format            | MP4               |
+|                     | Resolution        | 1920*1080         |
+|                     | Video Coded       | H.264 High L4.0   |
+|                     | FPS               | 24                |
+
+Note that the recordings for singers AG,CC, SCh is 25 fps.
 
 The mp4 files have a naming convention of <Singer_Name\>\_\<Performance_Type\>\_\<Raga_name\>\_\<View\>.mp4
 
-
 The repository can process both single-view recordings as well as recordings from multiple views.
 
-If you want the final processed master file - one per singer - please download them from <<INSERT LINK>>
+If you want the final processed master file - one per singer - please download them from << INSERT LINK >>
 
 On the other hand, if you want to download the raw data and replicate our processing, please follow the following steps.
 
