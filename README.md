@@ -1,7 +1,39 @@
 This is the repository for multimodal processing of Hindustani Raga music. 
 
-The dataset consists of recordings by 11 singers for 9 ragas.
-The mp4 files have a naming convention of <Singer_Name>_<Performance_Type>_<Raga_name>_\<View\>.mp4
+The dataset consists of recordings by 11 singers (5 Male,6 Female) performing 9 ragas. Each singer has 2 alaps and 1 pakad recording per raga (with a few exceptions). 
+| **Singers** | **Ragas** | **Pakad** | **Alap** | **Dur(min)** |
+|-------------|----------:|----------:|---------:|-------------:|
+| 11(5M,6F)   |         9 |       109 |      199 |          664 |
+
+Singers with the following abbreviations are male:-  CC, AK, MG, MP, NM\
+Singers with the following abbreviations are female:- AG, SCh, AP, RV, SS, SM
+
+Ragas used in the recordings and the pitch sets employed by the nine ragas. Lower case letters refer to the lower (flatter) alternative and upper case to the higher (sharper) pitch in each case. Some ragas are abbreviated and abbreviations given in parenthesis.
+
+| **Raga**             | **Scale**          |
+|----------------------|--------------------|
+| Bageshree (Bag)      | S R g m P D n      |
+| Bahar                | S R g m P D n N    |
+| Bilaskhani Todi (Bilas) | S r g m P d n  |
+| Jaunpuri (Jaun)      | S R g m P d n      |
+| Kedar                | S R G m M P D N    |
+| Marwa                | S r G M D N        |
+| Miyan ki Malhar (MM) | S R g m P D n N    |
+| Nand                 | S R G m M P D N    |
+| Shree                | S r G M P d N      |
+
+
+
+The mp4 files have a naming convention of <Singer_Name\>\_\<Performance_Type\>\_\<Raga_name\>\_\<View\>.mp4
+
+
+The repository can process both single-view recordings as well as recordings from multiple views.
+
+If you want the final processed master file - one per singer - please download them from <<INSERT LINK>>
+
+On the other hand, if you want to download the raw data and replicate our processing, please follow the following steps.
+
+**Before you start**
 
 Preparation of virtual environment
 cd to the directory where you want to install a python virtual environment
@@ -9,36 +41,44 @@ cd to the directory where you want to install a python virtual environment
 python -m venv .
 source bin/activate
 ```
-
-Before you start
+Downloading this repository and installing required packages
 ```
 git clone git@github.com:sujoyrc/hindustani_raga_dataset_processing.git
 cd hindustani_raga_dataset_processing
 pip install -r requirements.txt
 ```
+**Data Processing**
 
-To process the data in the repository:-
-1. Run the following
+1. Run the following. Set the CAMERA_VIEWS variable to be 'SINGLE_VIEW' or 'MULTIPLE_VIEW'.  The default is MULTIPLE_VIEW
 ```
 export ROOT_DIR=`echo $PWD`
+export CAMERA_VIEWS=SINGLE_VIEW
 cd ${ROOT_DIR}/00_data/00_orig_video
 ./download_mp4.sh
 ```
-Ensure download_mp4.sh has execute permission. Note that download_mp4.sh only downloads one sample file. 
-This repository has corresponding output files for this recording. 
+Ensure download_mp4.sh has execute permission. Note that download_mp4.sh only downloads one sample recording (AK_Pakad_Bag) - the output for that sample file is provided in this repository for reference. 
 
 Rest of the files you need to download from the links below.
 
-2. Download the recordings from << INSERT LINK >> . This link has only the Front view files. 
+**If you are processing with CAMERA_VIEWS=SINGLE_VIEW then follow the following steps**:-
+
+
+2. Download all the recordings from << INSERT LINK >> . This link has only the front view recordings.
 3. Save the recordings in 00_data/00_orig_video
-4. Download the json files from << INSERT LINK >> and save them in 01_json_files
-  
-   *Alternatively*, create the Openpose json files using the instructions for
+4. Download the json files from << INSERT LINK >> and save them in 01_openpose_output. This will be downloaded as one tar.json.gz file per recording.
+5. *Alternatively*, create the Openpose json files using the instructions for
    
      a) Installation in https://github.com/CMU-Perceptual-Computing-Lab/openpose#installation
    
      b) Run commands from https://github.com/CMU-Perceptual-Computing-Lab/openpose#quick-start-overview
    These two steps should create a json file per frame per video. Store the json files in 01_json_files
+
+**If you are processing with CAMERA_VIEWS=SINGLE_VIEW then follow the following steps**:-
+
+2. Download all the recordings from << INSERT LINK >> . This link has the recordings for all 3 views
+3. Save the recordings in 00_data/00_orig_video
+4. Download the output files of VideoPose 3D from << INSERT LINK >> and save them in 01_VideoPose3D_output
+
 
 5. Download the start and end times from << INSERT LINK >>. This is present for most videos (except those by singers AG, CC, SCh) and has the start and end time of the actual performance. There is one text file per performance and has the start time and end time.
 
