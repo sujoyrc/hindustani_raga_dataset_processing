@@ -35,7 +35,7 @@ The metadata for the recording is
 |                     | Video Coded       | H.264 High L4.0   |
 |                     | FPS               | 24                |
 
-Note that the recordings for singers AG,CC, SCh is 25 fps.
+Note that the recordings for singers AG,CC, SCh is at 25 fps.
 
 The mp4 files have a naming convention of <Singer_Name\>\_\<Performance_Type\>\_\<Raga_name\>\_\<View\>.mp4
 
