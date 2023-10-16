@@ -12,4 +12,5 @@ do
     tar -zxvf ${json_dir}/${each_tar_gz} --directory ${tar_extracted_directory}
 done
 
-python process_all_jsons_in_directory.py ${tar_extracted_directory} ${output_directory}
+#python process_all_jsons_in_directory.py ${tar_extracted_directory} ${output_directory}
+python process_keypoints.py 3D
