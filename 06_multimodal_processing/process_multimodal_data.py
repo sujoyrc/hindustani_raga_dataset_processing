@@ -11,11 +11,7 @@ from collections import Counter
 import os
 import matplotlib.ticker as ticker
 
-# with open('../00_data/00_orig_video/older_files_rename_mapping.pkl','rb') as f:
-#     rename_files_mapping=pickle.load(f)
-
-# os.chdir('../05_video_processing_output/pose_keypoints_dir/')
-pose_keypoints_dir='../05_video_processing_output/pose_keypoints_dir/'
+pose_keypoints_dir='../05_video_processing_output/02_keypoints_selected/'
 pitch_dir='../03_audio_processing_output/02_pitch_contour_dir'
 
 start_end_time_directory='../00_data/01_start_and_stop_times'
@@ -24,25 +20,6 @@ list_of_files=[os.path.join(pose_keypoints_dir,x) for x in os.listdir(pose_keypo
 list_of_files=[x for x in list_of_files if not re.search('Left',x)]
 list_of_files=sorted([x for x in list_of_files if not re.search('Right',x)])
 
-## May remove if source files renamed
-
-# rename_files_mapping['AG_P1_Bag.csv']='AG_Pakad_Bag.csv'
-# rename_files_mapping['AG_P1_Bahar.csv']='AG_Pakad_Bahar.csv'
-# rename_files_mapping['AG_P1_Bilas.csv']='AG_Pakad_Bilas.csv'
-# rename_files_mapping['AG_P1_Kedar.csv']='AG_Pakad_Kedar.csv'
-# rename_files_mapping['AG_P1_Marwa.csv']='AG_Pakad_Marwa.csv'
-# rename_files_mapping['AG_P1_Nand.csv']='AG_Pakad_Nand.csv'
-# rename_files_mapping['AG_P1_Shree.csv']='AG_Pakad_Shree.csv'
-# rename_files_mapping['AG_P1_Jaun.csv']='AG_Pakad_Jaun.csv'
-# rename_files_mapping['CC_P8_Bahar.csv']='CC_Pakad_Bahar.csv'
-# rename_files_mapping['SCh_P4b_Nand.csv']='SCh_Pakad2_Nand.csv'
-# rename_files_mapping['SCh_P4b_Nand_.csv']='SCh_Pakad2_Nand.csv'
-
-## May remove if source files renamed
-# list_of_files_old=[q for q in list_of_files if (q.split('_')[0] in ['AG','CC','SCh'])]
-# list_of_files_new=[q for q in list_of_files if (q.split('_')[0] not in ['AG','CC','SCh'])]
-# # [x for x in list_of_files if (x.split('_')[0] not in ['AG','CC','SCh']) & (re.search('Pakad',x))]
-# list_of_files=list_of_files_old+list_of_files_new
 
 list_of_alap_files=sorted(list_of_files)
 
@@ -50,16 +27,8 @@ gesture_pitch_pd=[]
 for each_file_name in list_of_alap_files:
     new_file_flag=''
     singer=each_file_name.split('_')[0]
-    
-    # if singer in ('AG','CC','SCh'):
-    #     each_file=re.sub('_C_pose','',each_file_name)
-    # else:
+
     each_file=re.sub('_pose','',each_file_name)
-        
-    # if each_file in rename_files_mapping.keys():
-    #     each_file=rename_files_mapping[each_file]
-    # else:
-        # each_file=each_file
 
     start_end_time_mapping_file=os.path.join(start_end_time_directory,re.sub('_Front.csv','.txt',os.path.basename(each_file)))
     if os.path.isfile(start_end_time_mapping_file):
@@ -78,9 +47,10 @@ for each_file_name in list_of_alap_files:
         temp_pd['time']=temp_pd['time']-round(start_time_crop,2)
 
     num_rows_gesture=temp_pd.shape[0]
-    print (each_file)
-    if os.path.isfile(os.path.join(pitch_dir,os.path.basename(each_file))):
-        pitch_pd=pd.read_csv(os.path.join(pitch_dir,os.path.basename(each_file)))
+    each_pitch_file_name=re.sub('.csv','_Front.csv',each_file)
+    print (os.path.join(pitch_dir,os.path.basename(each_pitch_file_name)))
+    if os.path.isfile(os.path.join(pitch_dir,os.path.basename(each_pitch_file_name))):
+        pitch_pd=pd.read_csv(os.path.join(pitch_dir,os.path.basename(each_pitch_file_name)))
         pitch_pd=pitch_pd[['pitch','time']]
         num_rows_pitch=pitch_pd.shape[0]
     else:
@@ -118,11 +88,46 @@ ax.set_ylabel('h[n]')
 ax.axhline(0,color='k')
 print ("Length of biphasic filter",n1.shape)
 
-def convolved_diff(x):
-    return np.convolve(x,bi_ph_normed,'same')
+# def convolved_diff(x):
+#     return np.convolve(x,bi_ph_normed,'same')
 
-columns_to_select=['time', 'pitch','RWrist_x','RWrist_y','LWrist_x','LWrist_y','LElbow_x','LElbow_y','RElbow_x','RElbow_y']
-gesture_columns=['RWrist_x','RWrist_y','LWrist_x','LWrist_y','LElbow_x','LElbow_y','RElbow_x','RElbow_y']
+def convolved_diff(x):
+    x=x.to_numpy()
+    pad_len = len(bi_ph_normed) + 1
+    left_pad = np.full(pad_len, x[0])
+    right_pad = np.full(pad_len, x[-1])
+
+    # Pad the array
+    x_padded = np.concatenate([left_pad, x, right_pad])
+
+    # Perform convolution
+    result = np.convolve(x_padded, bi_ph_normed, 'same')
+
+    # Return only the relevant part
+    return result[pad_len:-pad_len]
+
+# columns_to_select=['time', 'pitch','RWrist_x','RWrist_y','LWrist_x','LWrist_y','LElbow_x','LElbow_y','RElbow_x','RElbow_y']
+# gesture_columns=['RWrist_x','RWrist_y','LWrist_x','LWrist_y','LElbow_x','LElbow_y','RElbow_x','RElbow_y']
+
+# # wrist_columns=['RWrist_x','RWrist_y','LWrist_x','LWrist_y']
+# vel_columns=[re.sub('_','_vel_',x) for x in gesture_columns]
+# accl_columns=[re.sub('_vel_','_accl_',x) for x in vel_columns]
+
+# vertical_columns=['RElbow_y','RWrist_y','LElbow_y','LWrist_y']
+# vertical_columns_wrist=['RWrist_y','LWrist_y']
+# right_hand_columns=['RElbow_x','RElbow_y','RWrist_x','RWrist_y']
+# left_hand_columns=['LElbow_x','LElbow_y','LWrist_x','LWrist_y']
+
+# right_hand_wrist=['RWrist_x','RWrist_y']
+# left_hand_wrist=['LWrist_x','LWrist_y']
+
+# velocity_vector=["RWrist_vel","LWrist_vel","RElbow_vel","LElbow_vel"]
+# acceleration_vector=["RWrist_accl","LWrist_accl","RElbow_accl","LElbow_accl"]
+
+columns_to_select=['time','RWrist_x','RWrist_y','RWrist_z','LWrist_x','LWrist_y','LWrist_z',\
+                   'LElbow_x','LElbow_y','LElbow_z','RElbow_x','RElbow_y','RElbow_z']
+gesture_columns=['RWrist_x','RWrist_y','RWrist_z','LWrist_x','LWrist_y','LWrist_z',\
+                 'LElbow_x','LElbow_y','LElbow_z','RElbow_x','RElbow_y','RElbow_z']
 
 # wrist_columns=['RWrist_x','RWrist_y','LWrist_x','LWrist_y']
 vel_columns=[re.sub('_','_vel_',x) for x in gesture_columns]
@@ -130,47 +135,98 @@ accl_columns=[re.sub('_vel_','_accl_',x) for x in vel_columns]
 
 vertical_columns=['RElbow_y','RWrist_y','LElbow_y','LWrist_y']
 vertical_columns_wrist=['RWrist_y','LWrist_y']
-right_hand_columns=['RElbow_x','RElbow_y','RWrist_x','RWrist_y']
-left_hand_columns=['LElbow_x','LElbow_y','LWrist_x','LWrist_y']
+right_hand_columns=['RElbow_x','RElbow_y','RElbow_z','RWrist_x','RWrist_y','RWrist_z']
+left_hand_columns=['LElbow_x','LElbow_y','LElbow_z','LWrist_x','LWrist_y','LWrist_z']
 
-right_hand_wrist=['RWrist_x','RWrist_y']
-left_hand_wrist=['LWrist_x','LWrist_y']
+right_hand_wrist=['RWrist_x','RWrist_y','RWrist_z']
+left_hand_wrist=['LWrist_x','LWrist_y','LWrist_z']
 
 velocity_vector=["RWrist_vel","LWrist_vel","RElbow_vel","LElbow_vel"]
 acceleration_vector=["RWrist_accl","LWrist_accl","RElbow_accl","LElbow_accl"]
 
-def make_smoothed_vel_accln(each_pd):
-    '''
-    The biphasic filter will create x and y component wise velocity and acceleration with a negative value with respect to actual motion. 
-    For example when the hand is moving towards the right (positive ) then x is increasing but vel_x will be negative.
-    This is not important for our solution as we are using magnitude vector for velocity and acceleration.
-    '''
+velocity_vector_3d=["RWrist_vel_3d","LWrist_vel_3d","RElbow_vel_3d","LElbow_vel_3d"]
+acceleration_vector_3d=["RWrist_accl_3d","LWrist_accl_3d","RElbow_accl_3d","LElbow_accl_3d"]
 
-    each_pd_diff=each_pd[gesture_columns].apply(convolved_diff)  
+# def make_smoothed_vel_accln(each_pd):
+#     '''
+#     The biphasic filter will create x and y component wise velocity and acceleration with a negative value with respect to actual motion. 
+#     For example when the hand is moving towards the right (positive ) then x is increasing but vel_x will be negative.
+#     This is not important for our solution as we are using magnitude vector for velocity and acceleration.
+#     '''
+
+#     each_pd_diff=each_pd[gesture_columns].apply(convolved_diff)  
+    
+#     each_pd_diff.columns=vel_columns
+#     each_pd_diff["RWrist_vel"]=np.linalg.norm(each_pd_diff[['RWrist_vel_x','RWrist_vel_y']].values,axis=1)
+#     each_pd_diff["LWrist_vel"]=np.linalg.norm(each_pd_diff[['LWrist_vel_x','LWrist_vel_y']].values,axis=1)
+#     each_pd_diff["RElbow_vel"]=np.linalg.norm(each_pd_diff[['RElbow_vel_x','RElbow_vel_y']].values,axis=1)
+#     each_pd_diff["LElbow_vel"]=np.linalg.norm(each_pd_diff[['LElbow_vel_x','LElbow_vel_y']].values,axis=1)
+    
+#     each_pd_diff_2=each_pd_diff[vel_columns].apply(convolved_diff)  
+#     each_pd_diff_2.columns=accl_columns 
+    
+#     #print (each_pd_diff_2.columns)
+    
+#     each_pd_diff_2["RWrist_accl"]=np.linalg.norm(each_pd_diff_2[['RWrist_accl_x','RWrist_accl_y']].values,axis=1)
+#     each_pd_diff_2["LWrist_accl"]=np.linalg.norm(each_pd_diff_2[['LWrist_accl_x','LWrist_accl_y']].values,axis=1)
+#     each_pd_diff["RElbow_accl"]=np.linalg.norm(each_pd_diff_2[['RElbow_accl_x','RElbow_accl_y']].values,axis=1)
+#     each_pd_diff["LElbow_accl"]=np.linalg.norm(each_pd_diff_2[['LElbow_accl_x','LElbow_accl_y']].values,axis=1)
+    
+    
+#     each_pd_concat=pd.concat((each_pd,each_pd_diff,each_pd_diff_2),axis=1)
+    
+#     # min-max norm for velocity and acceleration
+#     for each_column in velocity_vector+acceleration_vector:
+#         each_pd_concat[each_column] = (each_pd_concat[each_column] - each_pd_concat[each_column].min()) / (each_pd_concat[each_column].max() - each_pd_concat[each_column].min())      
+#     columns_to_keep=list(each_pd.columns)+velocity_vector+acceleration_vector
+#     return each_pd_concat
+
+def make_smoothed_vel_accln(each_pd):
+    z_cols = [col.replace('_x', '_z') for col in each_pd.columns if '_x' in col]
+    existing_cols = each_pd.columns.tolist()
+
+    for z_col in z_cols:
+        if z_col not in existing_cols:
+            idx = existing_cols.index(z_col.replace('_z', '_y')) + 1
+            existing_cols.insert(idx, z_col)
+            each_pd[z_col] = 0
+
+    each_pd = each_pd[existing_cols]
+
+    each_pd_diff=each_pd[gesture_columns].apply(convolved_diff) 
     
     each_pd_diff.columns=vel_columns
-    each_pd_diff["RWrist_vel"]=np.linalg.norm(each_pd_diff[['RWrist_vel_x','RWrist_vel_y']].values,axis=1)
-    each_pd_diff["LWrist_vel"]=np.linalg.norm(each_pd_diff[['LWrist_vel_x','LWrist_vel_y']].values,axis=1)
-    each_pd_diff["RElbow_vel"]=np.linalg.norm(each_pd_diff[['RElbow_vel_x','RElbow_vel_y']].values,axis=1)
-    each_pd_diff["LElbow_vel"]=np.linalg.norm(each_pd_diff[['LElbow_vel_x','LElbow_vel_y']].values,axis=1)
+    #each_pd_diff["RWrist_vel"]=np.linalg.norm(each_pd_diff[['RWrist_vel_x','RWrist_vel_y']].values,axis=1)
+    #each_pd_diff["LWrist_vel"]=np.linalg.norm(each_pd_diff[['LWrist_vel_x','LWrist_vel_y']].values,axis=1)
+    #each_pd_diff["RElbow_vel"]=np.linalg.norm(each_pd_diff[['RElbow_vel_x','RElbow_vel_y']].values,axis=1)
+    #each_pd_diff["LElbow_vel"]=np.linalg.norm(each_pd_diff[['LElbow_vel_x','LElbow_vel_y']].values,axis=1)
+    
+    each_pd_diff["RWrist_vel_3d"]=np.linalg.norm(each_pd_diff[['RWrist_vel_x','RWrist_vel_y','RWrist_vel_y']].values,axis=1)
+    each_pd_diff["LWrist_vel_3d"]=np.linalg.norm(each_pd_diff[['LWrist_vel_x','LWrist_vel_y','LWrist_vel_z']].values,axis=1)
+    each_pd_diff["RElbow_vel_3d"]=np.linalg.norm(each_pd_diff[['RElbow_vel_x','RElbow_vel_y','RElbow_vel_z']].values,axis=1)
+    each_pd_diff["LElbow_vel_3d"]=np.linalg.norm(each_pd_diff[['LElbow_vel_x','LElbow_vel_y','LElbow_vel_z']].values,axis=1)
     
     each_pd_diff_2=each_pd_diff[vel_columns].apply(convolved_diff)  
     each_pd_diff_2.columns=accl_columns 
     
     #print (each_pd_diff_2.columns)
     
-    each_pd_diff_2["RWrist_accl"]=np.linalg.norm(each_pd_diff_2[['RWrist_accl_x','RWrist_accl_y']].values,axis=1)
-    each_pd_diff_2["LWrist_accl"]=np.linalg.norm(each_pd_diff_2[['LWrist_accl_x','LWrist_accl_y']].values,axis=1)
-    each_pd_diff["RElbow_accl"]=np.linalg.norm(each_pd_diff_2[['RElbow_accl_x','RElbow_accl_y']].values,axis=1)
-    each_pd_diff["LElbow_accl"]=np.linalg.norm(each_pd_diff_2[['LElbow_accl_x','LElbow_accl_y']].values,axis=1)
+    #each_pd_diff_2["RWrist_accl"]=np.linalg.norm(each_pd_diff_2[['RWrist_accl_x','RWrist_accl_y']].values,axis=1)
+    #each_pd_diff_2["LWrist_accl"]=np.linalg.norm(each_pd_diff_2[['LWrist_accl_x','LWrist_accl_y']].values,axis=1)
+    #each_pd_diff_2["RElbow_accl"]=np.linalg.norm(each_pd_diff_2[['RElbow_accl_x','RElbow_accl_y']].values,axis=1)
+    #each_pd_diff_2["LElbow_accl"]=np.linalg.norm(each_pd_diff_2[['LElbow_accl_x','LElbow_accl_y']].values,axis=1)
     
-    
+    each_pd_diff_2["RWrist_accl_3d"]=np.linalg.norm(each_pd_diff_2[['RWrist_accl_x','RWrist_accl_y','RWrist_accl_z']].values,axis=1)
+    each_pd_diff_2["LWrist_accl_3d"]=np.linalg.norm(each_pd_diff_2[['LWrist_accl_x','LWrist_accl_y','LWrist_accl_z']].values,axis=1)
+    each_pd_diff_2["RElbow_accl_3d"]=np.linalg.norm(each_pd_diff_2[['RElbow_accl_x','RElbow_accl_y','RElbow_accl_z']].values,axis=1)
+    each_pd_diff_2["LElbow_accl_3d"]=np.linalg.norm(each_pd_diff_2[['LElbow_accl_x','LElbow_accl_y','LElbow_accl_z']].values,axis=1)
+        
     each_pd_concat=pd.concat((each_pd,each_pd_diff,each_pd_diff_2),axis=1)
     
-    # min-max norm for velocity and acceleration
-    for each_column in velocity_vector+acceleration_vector:
-        each_pd_concat[each_column] = (each_pd_concat[each_column] - each_pd_concat[each_column].min()) / (each_pd_concat[each_column].max() - each_pd_concat[each_column].min())      
-    columns_to_keep=list(each_pd.columns)+velocity_vector+acceleration_vector
+    # # min-max norm for velocity and acceleration
+    # for each_column in velocity_vector+velocity_vector_3d+acceleration_vector+acceleration_vector_3d:
+    #     each_pd_concat[each_column] = (each_pd_concat[each_column] - each_pd_concat[each_column].min()) / (each_pd_concat[each_column].max() - each_pd_concat[each_column].min())      
+    #columns_to_keep=list(each_pd.columns)+velocity_vector+acceleration_vector
     return each_pd_concat
 
 

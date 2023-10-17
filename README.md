@@ -84,10 +84,10 @@ pip install -r requirements.txt
 ```
 **Data Processing**
 
-1. Run the following. Set the CAMERA_VIEWS variable to be 'SINGLE_VIEW' or 'MULTIPLE_VIEW'.  The default is MULTIPLE_VIEW
+1. Run the following. Set the CAMERA_VIEWS variable to be '2D' or '3D'.  The default is MULTIPLE_VIEW
 ```
 export ROOT_DIR=`echo $PWD`
-export CAMERA_VIEWS=SINGLE_VIEW
+export CAMERA_VIEWS=3D
 cd ${ROOT_DIR}/00_data/00_orig_video
 ./download_mp4.sh
 ```
