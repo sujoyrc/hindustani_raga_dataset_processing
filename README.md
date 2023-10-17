@@ -96,7 +96,7 @@ Ensure download_mp4.sh has execute permission. Note that download_mp4.sh only do
 
 Rest of the files you need to download from the links below.
 
-**If you are processing with CAMERA_VIEWS=SINGLE_VIEW then follow the steps 2a-4a**:-
+**If you are processing with CAMERA_VIEWS=2D then follow the steps 2a-4a**:-
 
 
 2a. Download all the recordings from << INSERT LINK >> . This link has only the front view recordings.
@@ -111,7 +111,7 @@ Rest of the files you need to download from the links below.
 These two steps should create a json file per frame per video. Store the json files in `01_json_files`.
 
 
-**If you are processing with CAMERA_VIEWS=MULTIPLE_VIEW then follow the steps 2b-4b**:-
+**If you are processing with CAMERA_VIEWS=3D then follow the steps 2b-4b**:-
 
 2b. Download all the recordings from << INSERT LINK >> . This link has the recordings for all 3 views
 3b. Save the recordings in 00_data/00_orig_video
