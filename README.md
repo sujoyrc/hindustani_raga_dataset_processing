@@ -7,6 +7,7 @@ The dataset consists of recordings by 11 singers (5 Male,6 Female) performing 9 
 
 Singers with the following abbreviations are male:-  CC, AK, MG, MP, NM\
 Singers with the following abbreviations are female:- AG, SCh, AP, RV, SS, SM
+Tonic per singer is present in text files in 00_data/03_singer_specific_tonic
 
 Following are the ragas used in the recordings. Some ragas are abbreviated.
 
@@ -84,7 +85,7 @@ pip install -r requirements.txt
 ```
 **Data Processing**
 
-1. Run the following. Set the CAMERA_VIEWS variable to be '2D' or '3D'.  The default is MULTIPLE_VIEW
+1. Run the following. Set the CAMERA_VIEWS variable to be '2D' or '3D'.  The default is 3D
 ```
 export ROOT_DIR=`echo $PWD`
 export CAMERA_VIEWS=3D
@@ -114,7 +115,7 @@ These two steps should create a json file per frame per video. Store the json fi
 
 2b. Download all the recordings from << INSERT LINK >> . This link has the recordings for all 3 views
 3b. Save the recordings in 00_data/00_orig_video
-4b. Download the output files of VideoPose 3D from << INSERT LINK >> and save them in `01_VideoPose3D_output`. 
+4b. Download the output files of VideoPose 3D from << INSERT LINK >> and save them in `01_videopose_output`. 
 
 *Alternatively*, create the 3D output for VideoPose3D by following the instructions in [VideoPose3D: Inference in the Wild](https://github.com/facebookresearch/VideoPose3D/blob/main/INFERENCE.md). Note that each recording with the detections of 3 views should be made into a separate custom dataset.
 .
@@ -133,7 +134,7 @@ These two steps should create a json file per frame per video. Store the json fi
   
    Ensure the .sh files have execute (+x) permission for user in question.
 
-   The output of this process will create the pitch contours at 10 ms intervals. Unvoiced segments less than 400 ms are interpolated by a linear interpolation.
+   The output of this process will create the pitch contours in cents at 10 ms intervals. Unvoiced segments less than 400 ms are interpolated by a linear interpolation. Conversion from Hz to cents is done by the tonic files in 00_data/03_singer_specific_tonic.
    There will be a separate output csv file for each recording present in 00_data/00_orig_video
    
 7. Run the following. This code will use the CAMERA_VIEWS variable.
