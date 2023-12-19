@@ -168,7 +168,7 @@ Note that we do not have the same set of keypoints in 2D and 3D. The details are
 
      This process does the following:-
      
-     a. Computes velocity (V) and accelaration (A) by a 101 point biphasic filter on the position (P) coordinates of keypoints of interest. The document [Velocity and acceleration processing](https://drive.google.com/file/d/1YmyQaPJNU_IZqVz9ztMsMjrFztecFcDp/view?usp=sharing) has the details of the biphasic filter and the velocity and acceleration computation.
+     a. Computes velocity (V) and accelaration (A) by a 101 point biphasic filter on the position (P) coordinates of keypoints of interest. The document [Velocity and acceleration processing](Vel_and_accln_processing_details.pdf) has the details of the biphasic filter and the velocity and acceleration computation.
      
      b. Using the start and end times (where relevant) removes gesture information outside start and end time intervals and resets the time for the gesture information to zero corresponding to the start time. Then it combines the pitch and gesture for a certain video information based on the adjusted time.
      
