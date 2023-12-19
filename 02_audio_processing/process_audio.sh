@@ -3,16 +3,18 @@
 # Input - Directory containing cropped audio
 # Processing:-
 #     The code does the following processing steps:-
-#        1.  (Optional) Tonic extraction. Alternatively, we use singer specific tonic values (recommended)
+#        1.  (Optional) Tonic extraction. Alternatively, we use singer specific tonic values (Recommended)
 #        2.  Source separation via Spleeter
-#        3.  Source separation using Audacity for some recordings - singers - AG/SCh/CC
-#        4.  Extraction of pitch contours using parselmouth - normalized using tonic values
+#        3.  Extraction of pitch contours using parselmouth - normalized using tonic values
 # OUTPUTS
 #        1.  Extracted tonic per audio (if run)
 #        2.  Extracted source separated audio
 #        3.  Extracted pitch contour
 #
-
+#
+#   This file does not process the audacity based source separated audio for AG/CC/SCh singers.
+#   Output is produced based on source separation of spleeter only. However audacity based source separation is of higher quality for AG/CC/SCh singers
+# 
 
 SOURCE_DIR="../00_data/02_audio_cropped"
 TARGET_DIR="../03_audio_processing_output"
@@ -87,9 +89,9 @@ then
         tonicfilename_full_path=${TONIC_FOLDER}/${tonic_file_basename}
         if [[ $NORMALIZE_PITCH_CONTOURS == "Y" ]]
         then
-            python extract_pitch_contours.py $inputfile  $tonicfilename_full_path ${PITCH_CONTOUR_DIRECTORY}
+            python extract_pitch_contours_v0.py $inputfile  $tonicfilename_full_path ${PITCH_CONTOUR_DIRECTORY}
         else
-            python extract_pitch_contours.py $inputfile  ${PITCH_CONTOUR_DIRECTORY}
+            python extract_pitch_contours_v0.py $inputfile  ${PITCH_CONTOUR_DIRECTORY}
         fi
     done
 fi

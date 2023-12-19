@@ -34,9 +34,9 @@ for each_file_name in list_of_alap_files:
     if os.path.isfile(start_end_time_mapping_file):
         with open(start_end_time_mapping_file,'r') as f:
             lines = [line.rstrip() for line in f]
-            start_time_crop=float(lines[0].split('\t')[0])
-            end_time_crop=float(lines[0].split('\t')[1])
-            new_file_flag='Y'
+            # start_time_crop=float(lines[0].split('\t')[0])
+            # end_time_crop=float(lines[0].split('\t')[1])
+            # new_file_flag='Y'
      
     
     temp_pd=pd.read_csv(each_file_name)
@@ -47,13 +47,15 @@ for each_file_name in list_of_alap_files:
         temp_pd['time']=temp_pd['time']-round(start_time_crop,2)
 
     num_rows_gesture=temp_pd.shape[0]
-    each_pitch_file_name=re.sub('.csv','_Front.csv',each_file)
+    # each_pitch_file_name=re.sub('.csv','_Front.csv',each_file)
+    each_pitch_file_name=each_file
     print (os.path.join(pitch_dir,os.path.basename(each_pitch_file_name)))
     if os.path.isfile(os.path.join(pitch_dir,os.path.basename(each_pitch_file_name))):
         pitch_pd=pd.read_csv(os.path.join(pitch_dir,os.path.basename(each_pitch_file_name)))
         pitch_pd=pitch_pd[['pitch','time']]
         num_rows_pitch=pitch_pd.shape[0]
     else:
+        print ("Does not  exist - ",os.path.join(pitch_dir,os.path.basename(each_pitch_file_name)))
         num_rows_pitch=0
     
     temp1_pd=temp_pd.merge(pitch_pd,on="time",how="left")

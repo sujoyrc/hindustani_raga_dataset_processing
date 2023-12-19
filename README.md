@@ -39,6 +39,8 @@ Note that the recordings for singers AG,CC, SCh is at 25 fps.
 
 The mp4 files have a naming convention of <Singer_Name\>\_\<Performance_Type\>\_\<Raga_name\>\_\<View\>.mp4
 
+The details of the audio processing pipeline is available in ![Audio Pitch Contour Processing](ReadmePitchExtraction.docx)
+
 The repository can process both single-view recordings as well as recordings from multiple views. The following diagrams give the process for 2D and 3D.
 
 | ![Processing with front view camera only](Process2D.png) | ![Processing with all 3 views](Process3D.png) |
@@ -136,6 +138,8 @@ These two steps should create a json file per frame per video. Store the json fi
 
    The output of this process will create the pitch contours in cents at 10 ms intervals. Unvoiced segments less than 400 ms are interpolated by a linear interpolation. Conversion from Hz to cents is done by the tonic files in 00_data/03_singer_specific_tonic.
    There will be a separate output csv file for each recording present in 00_data/00_orig_video
+
+   Note that this does not do the separate audacity processing for 3 singers - AG / CC / SCh
    
 7. Run the following. This code will use the CAMERA_VIEWS variable.
     ```
@@ -153,6 +157,8 @@ These two steps should create a json file per frame per video. Store the json fi
    b) 01_keypoints_all - this has one file per recording having all 25 Openpose keypoints followed by z-score normalization
    
    c) 02_keypoints_selected - this has one file per recording having only the keypoints for wrist and elbow of both hands. This is the only data used in the next step
+
+Note that we do not have the same set of keypoints in 2D and 3D. The details are provided in [Keypoint Details](KeypointDetail.xlsx)
 
 10. Run the following
      ```

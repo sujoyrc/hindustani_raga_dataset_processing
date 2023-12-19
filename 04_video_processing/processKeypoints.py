@@ -101,7 +101,7 @@ class ProcessKeyPoints3D(object):
         coco_array=np.full(kp_z_reshaped.shape,np.nan)
         for coco_idx, h36m_idx in self.mapping.items():
             if h36m_idx != -1:  # If there's a valid mapping
-                coco_array[:, 0, coco_idx] = kp_z_reshaped[:, 0, h36m_idx]
+                coco_array[:, 0, coco_idx] = kp_z_reshaped[:, 0, coco_idx]
         kp_xyz = np.concatenate((kp_xy, coco_array), axis=1)
 
         data = []
@@ -332,15 +332,13 @@ def resample_dataframe(input_df):
 
 def normalize_data_zscore(all_keypoints_pd):
     cols_to_standardize=[x for x in list(all_keypoints_pd.columns) if x not in ['frame_number','time']]
-    cols_to_standardize=[x for x in cols_to_standardize if not x.endswith('_z')]
+    cols_to_standardize=[x for x in cols_to_standardize ] #if not x.endswith('_z')]
     #print (cols_to_standardize)
     means = all_keypoints_pd[cols_to_standardize].mean()
     stds = all_keypoints_pd[cols_to_standardize].std()
     all_keypoints_pd[cols_to_standardize] = (all_keypoints_pd[cols_to_standardize] - means) / stds
     return all_keypoints_pd
     
-
-
 def main():
     if len(sys.argv[1])!=2:
         print ("Usage :",sys.argv[0]," [2D|3D]")
@@ -405,5 +403,6 @@ def main():
         final_df_to_keep=normalized_keypoints[to_keep_coord_columns]
         final_df_to_keep.to_csv(output_file_pose,index=False)
         print (output_file_pose)
+
 if __name__=="__main__":
     main()
