@@ -30,14 +30,20 @@ for each_file_name in list_of_alap_files:
 
     each_file=re.sub('_pose','',each_file_name)
 
-    start_end_time_mapping_file=os.path.join(start_end_time_directory,re.sub('_Front.csv','.txt',os.path.basename(each_file)))
-    if os.path.isfile(start_end_time_mapping_file):
-        with open(start_end_time_mapping_file,'r') as f:
-            lines = [line.rstrip() for line in f]
-            start_time_crop=float(lines[0].split('\t')[0])
-            end_time_crop=float(lines[0].split('\t')[1])
-            new_file_flag='Y'
-     
+    # start_end_time_mapping_file=os.path.join(start_end_time_directory,re.sub('_Front.csv','.txt',os.path.basename(each_file)))
+    # if os.path.isfile(start_end_time_mapping_file):
+    #     with open(start_end_time_mapping_file,'r') as f:
+    #         lines = [line.rstrip() for line in f]
+    #         start_time_crop=float(lines[0].split('\t')[0])
+    #         end_time_crop=float(lines[0].split('\t')[1])
+    #         new_file_flag='Y'
+    start_end_time_mapping_file=os.path.join(start_end_time_directory,singer+'_offsets.csv')
+    if os.path.isfile(start_end_time_mapping_file):    
+        offset=pd.read_csv(start_end_time_mapping_file)
+        recording_name=each_file.split('.')[0]
+        start_time_crop=float(offset[offset['Filename']==recording_name].values[0][1])
+        end_time_crop=float(offset[offset['Filename']==recording_name].values[0][2])
+        new_file_flag='Y'
     
     temp_pd=pd.read_csv(each_file_name)
     #print (each_file_name,temp_pd.shape[0])
