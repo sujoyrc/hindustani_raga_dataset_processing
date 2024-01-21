@@ -195,7 +195,7 @@ The interpolated pitch contour will be saved as a csv file in OUTPUT\_FOLDER
 
 ### Velocity and Acceleration Estimation
 
-## Using the processed master files
+## Using processed master files
 
 If you wish to access directly the final processed master files - one per singer - please download them from << INSERTLINK>>
 
