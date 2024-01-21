@@ -1,7 +1,5 @@
 Contents
 
-[**Summary of Contents of repository......................................................................................................................................2** ](#_page1_x72.00_y72.00)[Dataset Details........................................................................................................................................................................4** ](#_page3_x72.00_y72.00)[Metadata For The Recording................................................................................................................................................. 6** ](#_page5_x72.00_y72.00)[Processing Flowcharts...........................................................................................................................................................8** ](#_page7_x72.00_y72.00)[Audio Processing and Pitch Extraction................................................................................................................................9** ](#_page8_x72.00_y72.00)[Part 1: From Raw Audio to Source Separated Audio......................................................................................................... 9 ](#_page8_x72.00_y122.29)[Part 2: From Source Separated Audio to Pitch Contours..................................................................................................11 ](#_page10_x72.00_y324.18)[**Video Time Series Processing.............................................................................................................................................13** ](#_page12_x72.00_y72.00)[SavGol Filter, Resampling and Z-Score Normalization.....................................................................................................13 ](#_page12_x72.00_y118.99)[Velocity and Acceleration Estimation................................................................................................................................13 ](#_page12_x72.00_y164.15)[**Using processed master files..............................................................................................................................................14** ](#_page13_x72.00_y72.00)[Replicating the processing of this repository....................................................................................................................17** ](#_page16_x72.00_y101.84)[Before you start.................................................................................................................................................................17 ](#_page16_x72.00_y189.96)[Data Processing................................................................................................................................................................17](#_page16_x72.00_y412.90)
-
 This is the code repository for multimodal processing of Hindustani Raga music. It covers the chain of processing as well as intermediate outputs for the following overall task: Set of Videos (mp4) of raga alap (or pakad) by a singer across 9 ragas are processed to obtain a CSVMasterfile containing the time series (sampled at 10 ms intervals) of singer pitch (cents with reference to singer tonic), gesture (3d position, velocity, acceleration) from selected keypoints (elbow, wrist). We eventually present: One per-singer: Masterfile, offsets info file linking video
 
 timestamps with masterfile timestamps and singer tonic.
@@ -49,20 +47,6 @@ The dataset consists of recordings by 11singers (5 Male,6 Female) performing 9 r
 Tonic per singer is present in text files in 00\_data/03\_singer\_specific\_tonic Following are the ragas used in the recordings. Some raga names are abbreviated.
 
 
-
-|||||
-| :- | :- | :- | :- |
-|||||
-|||||
-|||||
-|||||
-|||||
-|||||
-|||||
-|||||
-|||||
-|||||
-
 |**Raga**|**#Pakad**|**#Alap**|**Duration**||
 | - | - | - | - | :- |
 |Bageshree (Bag)|12|22|73||
@@ -87,18 +71,12 @@ Tonic per singer is present in text files in 00\_data/03\_singer\_specific\_toni
 ||Audio Codec|AAC|
 
 
-
 |**Video Metadata**|Format|MP4|
 | - | - | - |
 ||Resolution|1920\*1080|
 ||Video Coded|H.264 High L4.0|
 ||FPS|24|
 
-||||
-| :- | :- | :- |
-||||
-||||
-||||
 For every singer we also provide a tonic file containing the tonic for the singer. This is provided in 00\_data/02\_singer\_specific\_tonic
 
 The repository can process both single-view recordings as well as recordings from multiple views. The following diagrams give the process for 2D and 3D. We use [OpenPose f](https://github.com/CMU-Perceptual-Computing-Lab/openpose)or keypoint estimation from front view only and [VideoPose3D ](https://github.com/facebookresearch/VideoPose3D)for keypoint extraction from 3 views.
