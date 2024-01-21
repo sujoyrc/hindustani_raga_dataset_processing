@@ -1,29 +1,42 @@
-Contents
+# Contents
 
-This is the code repository for multimodal processing of Hindustani Raga music. It covers the chain of processing as well as intermediate outputs for the following overall task: Set of Videos (mp4) of raga alap (or pakad) by a singer across 9 ragas are processed to obtain a CSVMasterfile containing the time series (sampled at 10 ms intervals) of singer pitch (cents with reference to singer tonic), gesture (3d position, velocity, acceleration) from selected keypoints (elbow, wrist). We eventually present: One per-singer: Masterfile, offsets info file linking video
+# Table of Contents
+- [Summary of Contents of Repository](#summary-of-contents-of-repository)
+- [Dataset Details](#dataset-details)
+- [Metadata For The Recording](#metadata-for-the-recording)
+- [Processing Flowcharts](#processing-flowcharts)
+- [Audio Processing and Pitch Extraction](#audio-processing-and-pitch-extraction)
+  - [Part 1: From Raw Audio to Source Separated Audio](#part-1-from-raw-audio-to-source-separated-audio)
+  - [Part 2: From Source Separated Audio to Pitch Contours](#part-2-from-source-separated-audio-to-pitch-contours)
+- [Video Time Series Processing](#video-time-series-processing)
+  - [SavGol Filter, Resampling and Z-Score Normalization](#savgol-filter-resampling-and-z-score-normalization)
+  - [Velocity and Acceleration Estimation](#velocity-and-acceleration-estimation)
+- [Using Processed Master Files](#using-processed-master-files)
+- [Replicating the Processing of This Repository](#replicating-the-processing-of-this-repository)
+  - [Before You Start](#before-you-start)
+  - [Data Processing](#data-processing)
 
-timestamps with masterfile timestamps and singer tonic.
 
-<a name="_page1_x72.00_y72.00"></a>Summary of Contents of repository
+This is the code repository for multimodal processing of Hindustani Raga music. It covers the chain of processing as well as intermediate outputs for the following overall task: Set of Videos (mp4) of raga alap (or pakad) by a singer across 9 ragas are processed to obtain a CSVMasterfile containing the time series (sampled at 10 ms intervals) of singer pitch (cents with reference to singer tonic), gesture (3d position, velocity, acceleration) from selected keypoints (elbow, wrist). We eventually present: One per-singer: Masterfile, offsets info file linking video timestamps with masterfile timestamps and singer tonic.
+
+## Summary of Contents of repository
+
+| Folder Name                | Description |
+| -------------------------- | ----------- |
+| 00_data                    | This is the data folder containing the original videos, text file for each singer with the start and stop times for the actual singing in each video and the singer specific tonic. |
+| 01_json_files              | This is the output of 2D coordinates from the OpenPose processing using the front view only. |
+| 01_videopose_output        | This is the output of the 3D coordinates from VideoPose3D library. This uses all the 3 views of the recording. |
+| 02_audio_processing        | This has the code for the processing of the audio |
+| 03_audio_processing_output | This is where the audio processing code places its output |
+| 04_video_processing        | This is the location for the video processing code (SavGol filtering, 10 ms resampling, and Z-score normalization) which converts the output of either OpenPose or VideoPose3D into time series at 10ms intervals |
+| 05_video_processing_output | This is where the video processing code places its output |
+| 06_multimodal_processing   | This is the location of code for the computation of velocity and acceleration and combination of audio and video processing output |
+| 07_multimodal_processing_output | This is where the masterfile (output of above processing) is stored. |
 
 
 
-|00\_data|This is the data folder containing the original videos, text file for each singer with the start and stop times for the actual singing in each video and the singer specific tonic.|
-| - | :- |
-|01\_json\_files|This is the output of 2D coordinates from the OpenPose processing using the front view only.|
-|01\_videopose\_output|This is the output of the 3D coordinates from VideoPose3D library. This uses all the 3 views of the recording.|
-|02\_audio\_processing|This has the code for the processing of the audio|
-|03\_audio\_processing\_output|This is where the audio processing code places its output|
-|04\_video\_processing|This is the location for the video processing code (SavGol filtering, 10 ms resampling, and Z-score normalization) which converts the output of either OpenPose or VideoPose3D into time series at 10ms intervals|
 
-
-
-|05\_video\_processing\_output|This is where the video processing code places its output|
-| - | - |
-|06\_multimodal\_processing|This is the location of code for the computation of velocity and acceleration and combination of audio and video processing output|
-|07\_multimodal\_processing\_output|This is where the masterfile (output of above processing) is stored.|
-
-<a name="_page3_x72.00_y72.00"></a>Dataset Details
+## Dataset Details
 
 The dataset consists of recordings by 11singers (5 Male,6 Female) performing 9 ragas. Each singer has 2 alaps and 1 pakad recording per raga (with a few exceptions).
 
@@ -46,22 +59,21 @@ The dataset consists of recordings by 11singers (5 Male,6 Female) performing 9 r
 
 Tonic per singer is present in text files in 00\_data/03\_singer\_specific\_tonic Following are the ragas used in the recordings. Some raga names are abbreviated.
 
+| **Raga** | **#Pakad** | **#Alap** | **Duration** |
+|----------|------------|-----------|--------------|
+| Bageshree (Bag) | 12 | 22 | 73 |
+| Bahar | 12 | 22 | 70 |
+| Bilaskhani Todi (Bilas) | 13 | 22 | 73 |
+| Jaunpuri (Jaun) | 12 | 22 | 72 |
+| Kedar | 12 | 22 | 72 |
+| Marwa | 12 | 22 | 76 |
+| Miyan ki Malhar (MM) | 12 | 23 | 78 |
+| Nand | 12 | 22 | 74 |
+| Shree | 12 | 22 | 75 |
+| **ALL** | **109** | **199** | **664** |
 
-|**Raga**|**#Pakad**|**#Alap**|**Duration**||
-| - | - | - | - | :- |
-|Bageshree (Bag)|12|22|73||
-|Bahar|12|22|70||
-|Bilaskhani Todi (Bilas)|13|22|73||
-|Jaunpuri (Jaun)|12|22|72||
-|Kedar|12|22|72||
-|Marwa|12|22|76||
-|Miyan ki Malhar (MM)|12|23|78||
-|Nand|12|22|74||
-|Shree|12|22|75||
-|**ALL**|**109**|**199**|**664**||
-||||||
-||||||
-<a name="_page5_x72.00_y72.00"></a>Audiovisual Recording Format
+
+## Metadata for the recording
 
 
 
@@ -81,15 +93,16 @@ For every singer we also provide a tonic file containing the tonic for the singe
 
 The repository can process both single-view recordings as well as recordings from multiple views. The following diagrams give the process for 2D and 3D. We use [OpenPose f](https://github.com/CMU-Perceptual-Computing-Lab/openpose)or keypoint estimation from front view only and [VideoPose3D ](https://github.com/facebookresearch/VideoPose3D)for keypoint extraction from 3 views.
 
-<a name="_page7_x72.00_y72.00"></a>Processing Flowcharts
+## Processing Flowcharts
 
-` `![](Process2D.png)![](Process2D.png)
+| ![Processing with front view camera only](Process2D.png) | ![Processing with all 3 view cameras](Process2D.png) |
+|:---------------------------------------------------------:|:----------------------------------------------------:|
+| Processing with front view camera only                    | Processing with all 3 view cameras                   |
 
-Processing with front view camera only Processing with all 3 view cameras
 
-<a name="_page8_x72.00_y72.00"></a>Audio Processing and Pitch Extraction
+## Audio Processing and Pitch Extraction
 
-<a name="_page8_x72.00_y122.29"></a>Part 1: From Raw Audio to Source Separated Audio
+### Part 1: From Raw Audio to Source Separated Audio
 
 For Durham singers (AG, CC, SCh) we used **Spleetersource separation** (4 stem model) ([https://research.deezer.com/projects/spleeter.html)](https://research.deezer.com/projects/spleeter.html)
 
@@ -98,16 +111,16 @@ For Pune singers (AK, AP, MG, MP, NM, RV, SM, SS) we used **Audacity Noise Remov
 This choice was made based on some trial and error. We had three choices to do the source separation:
 
 1) Using Spleeter Only
-1) Using ANRonly
-1) Using ANRfollowed by Spleeter (ANR+Spleeter)
+1) Using ANR only
+1) Using ANR followed by Spleeter (ANR+Spleeter)
 
-The drawback of using Spleeter was that some portion of the vocals was getting lost because of aggressive source separation. The drawback of using ANRwas that it was not as effective as Spleeter in removing the accompaniment (Tanpura). So we had a tradeoff.
+The drawback of using Spleeter was that some portion of the vocals was getting lost because of aggressive source separation. The drawback of using ANR was that it was not as effective as Spleeter in removing the accompaniment (Tanpura). So we had a tradeoff.
 
 We noticed the following:
 
 **Pune Singers:**
 
-For SM, the voice was loud enough so ANRwas working well. But it was not working better than Spleeter. For other Pune Singers ANR is working worse than Spleeter. So for new singers, using Spleeter only was the best. Audacity noise removal is not giving any improvement, irrespective of whether we use Spleeter or not. Because of the loud tanpura, we need the aggressive splitting of Spleeter to get the separated vocals.
+For SM, the voice was loud enough so ANR was working well. But it was not working better than Spleeter. For other Pune Singers ANR is working worse than Spleeter. So for new singers, using Spleeter only was the best. Audacity noise removal is not giving any improvement, irrespective of whether we use Spleeter or not. Because of the loud tanpura, we need the aggressive splitting of Spleeter to get the separated vocals.
 
 **Durham Singers:**
 
@@ -116,41 +129,35 @@ For Durham singers, low pass filtering followed by noise removal was working wel
 Steps in ANR:
 
 1. Low pass filter (2400 Hz, 48 dBroll off) using Audacity:
-1. Noise removal:
+2. Noise removal:
 
 The noise profiles and parameter values chosen are mentioned later. For details on how to use Audacity Noise Removal, check this page: <https://manual.audacityteam.org/man/noise_reduction.html>
 
-For AG and CC, ANRonly worked the best. For SCh, all three were similar. So for old singers we used ANRonly, to not risk losing the vocals because of Spleeter.
+For AG and CC, ANR only worked the best. For SCh, all three were similar. So for old singers we used ANR only, to not risk losing the vocals because of Spleeter.
 
 So for Durham singers the pipeline is:
 
 1. Filtering using lowpass filter of 2400 Hz cutoff and 48 dBrolloff (in Audacity: Effects → EQ and Filters → Low-pass filter) For steps 2 and 3: (Effects → Noise Reduction and Repair → Noise Reduction)
-1. Choose noise profile: (note: noise profile is chosen after filtering, not before)
-1. Noise removal
+2. Choose noise profile: (note: noise profile is chosen after filtering, not before)
+3. Noise removal
 
-Based on trial-error and tuning the parameters, the noise profiles and parameters chosen finally, for the Durham singers were: **Singer Noise Sensitivity Frequency Noise Profile (forragas except Noise profile (forBageshri) 
+Based on trial-error and tuning the parameters, the noise profiles and parameters chosen finally, for the Durham singers were: **Singer Noise Sensitivity Frequency Noise Profile (for ragas except Noise profile (forBageshri) 
 
-**Reduction smoothing Bageshri)**
+| **Singer** | **Noise Reduction (dB)** | **Sensitivity** | **Frequency smoothing (bands)** | **Noise Profile (for ragas except Bageshri)** | **Noise profile (for Bageshri)\*** |
+|------------|---------------------------|-----------------|----------------------------------|-----------------------------------------------|----------------------------------|
+| AG         | 12                        | 4               | 0                                | AG_Aalap2_MM – 0 to 4.6s                      | AG_Aalap2_Bag – 0 to 2.9s        |
+| CC         | 18                        | 4               | 0                                | CC_Aalap2_Bahar – 0 to 4.8s                   | CC_Aalap1_Bag – 0 to 5.2s        |
+| SCh        | 12                        | 4               | 0                                | SCh_Aalap1_Shree – 0 to 4.5s                  | SCh_Aalap2_Bag – 3 min 7.0 s to 3 min 12.3 s |
 
-**(dB) (bands)**
 
-**AG** 12 4 0 AG\_Aalap2\_MM – 0 to 4.6s AG\_Aalap2\_Bag – 0 to 2.9s
-
-
-
-|||||||
-| :- | :- | :- | :- | :- | :- |
-|**CC**|18|4|0|CC\_Aalap2\_Bahar – 0 to 4.8s|CC\_Aalap1\_Bag – 0 to 5.2s|
-|**SCh**|12|4|0|SCh\_Aalap1\_Shree – 0 to 4.5s|SCh\_Aalap2\_Bag – 3 min 7.0 s to 3 min 12.3 s|
-
-**\***The reason for using different noise profiles for Bageshri was that in Bageshri the tanpura is played in cycles of Sa-Ma instead of Sa-Pa. Hence, the spectra of tanpura in raga Bageshri is different than that in other ragas.
+\* The reason for using different noise profiles for Bageshri was that in Bageshri the tanpura is played in cycles of Sa-Ma instead of Sa-Pa. Hence, the spectra of tanpura in raga Bageshri is different than that in other ragas.
 
 Using this, we got the source separated audios, which are stored in the folder Source\_Separated\_Audios under two subfolders:
 
 - Old\_Singers\_ANR: Durham singer audios separated using Audacity Noise Removal
 - New\_Singers\_Spleeter: Pune singer audios separated using Spleeter
 
-<a name="_page10_x72.00_y324.18"></a>Part 2: From Source Separated Audio to Pitch Contours
+### Part 2: From Source Separated Audio to Pitch Contours
 
 Once we have the source separated audio, we use the Python APIfor Praat software, namely Parselmouth, to derive the pitch contour from the audio using filtered autocorrelation method. Parselmouth pitch detector has several parameters that can be tuned for increased accuracy of the pitch contour. Based on extraction performance and comparison with the audio done by manual listening to the sonified contour, we found that the following values (see table) worked best on our audios. The tonic is fixed for a given singer, the other parameters are tuned. The tuning was done mainly with the intention to avoid octave errors and false silences (regions which are actually voiced but predicted wrongly as silences).
 
@@ -180,15 +187,18 @@ Instructions to run the script:
 1) In the file extract\_pitch\_contours.py, change the variables INPUT\_FOLDER, OUTPUT\_FOLDERand FILEaccording to your directory structure. INPUT\_FOLDERshould contain the audio file that is to be pitch-extracted, and OUTPUT\_FOLDERshould be a folder where the csv file of pitch contour is to be stored.
 1) Run the script using the command:
 
+   ```
    python extract\_pitch\_contours.py
-
+   ```
 The interpolated pitch contour will be saved as a csv file in OUTPUT\_FOLDER
 
-<a name="_page12_x72.00_y72.00"></a>Video Time Series Processing
+## Video Time Series Processing
 
-<a name="_page12_x72.00_y118.99"></a>SavGol Filter, Resampling and Z-Score Normalization <a name="_page12_x72.00_y164.15"></a>Velocity and Acceleration Estimation
+### SavGol Filter, Resampling and Z-Score Normalization 
 
-<a name="_page13_x72.00_y72.00"></a>Using the processed master files
+### Velocity and Acceleration Estimation
+
+## Using the processed master files
 
 If you wish to access directly the final processed master files - one per singer - please download them from << INSERTLINK>>
 
@@ -229,35 +239,34 @@ The master files have the following columns:-
 |Velocity magnitude|1\*4|**<JointName>\_vel\_mag** for Euclidean magnitude of velocity and acceleration for each of the joints|
 |Acceleration magnitude|1\*4|**<JointName>\_accl\_mag** for Euclidean magnitude of velocity and acceleration for each of the joints|
 |**Total Numberof columns**|**47**||
-Note: Position coordinates are z-score normalized over the entire recording. There is no normalization done for velocity and acceleration columns.
 
-<a name="_page16_x72.00_y101.84"></a>Replicating the processing of this repository
+**Note:** Position coordinates are z-score normalized over the entire recording. There is no normalization done for velocity and acceleration columns.
+
+## Replicating the processing of this repository
 
 On the other hand, if you want to download the raw data and replicate our processing, please follow the following steps.
 
-<a name="_page16_x72.00_y189.96"></a>Before you start
+### Before you start
 
 Preparation of virtual environment cd to the directory where you want to install a python virtual environment
 
+```
 python -m venv .
-
 source bin/activate
-
 Downloading this repository and installing required packages
-
 git clone git@github.com:sujoyrc/hindustani\_raga\_dataset\_processing.git cd hindustani\_raga\_dataset\_processing
-
 pip install -r requirements.txt
+```
 
-<a name="_page16_x72.00_y412.90"></a>Data Processing
+### Data Processing
 
 1\. Run the following. Set the CAMERA\_VIEWS variable to be '2D' or '3D'. The default is 3D
 
+```
 export ROOT\_DIR=`echo $PWD` export CAMERA\_VIEWS=3D
-
 cd ${ROOT\_DIR}/00\_data/00\_orig\_video
-
 ./download\_mp4.sh
+```
 
 Ensure download\_mp4.sh has execute permission. Note that download\_mp4.sh only downloads one sample recording (AK\_Pakad\_Bag) - the output for that sample file is provided in this repository for reference.
 
@@ -275,12 +284,13 @@ These two steps should create a json file per frame per video. Store the json fi
 
 *Alternatively*, create the 3D output for VideoPose3D by following the instructions in V[ideoPose3D: Inference in the Wild.](https://github.com/facebookresearch/VideoPose3D/blob/main/INFERENCE.md) Note that each recording with the detections of 3 views should be made into a separate custom dataset. .
 
-6. Download the start and end times from <<INSERTLINK>>. There is one text file per performance and has the start time and end time of the actual performance - excluding any leading announcements and silence at the end. Save the start and end times in directory 00\_data/01\_start\_and\_stop\_times
-6. Run the following
+5. Run the following
 
-cd ${ROOT\_DIR}/02\_audio\_processing ./extract\_audio.sh
-
+```
+cd ${ROOT\_DIR}/02\_audio\_processing
+./extract\_audio.sh
 ./process\_audio.sh
+```
 
 Ensure the .sh files have execute (+x) permission for user in question.
 
@@ -290,26 +300,30 @@ Note that this does not do the separate audacity based processing (source separa
 
 7\. Run the following. This code will use the CAMERA\_VIEWS variable.
 
-8\.cd ${ROOT\_DIR}/04\_video\_processing 9../run\_gesture\_keypoint\_extraction.sh
+```
+cd ${ROOT\_DIR}/04\_video\_processing 
+./run\_gesture\_keypoint\_extraction.sh
+```
 
 Ensure the .sh files have execute (+x) permission for user in question.
 
 This process will create the gesture coordinates for each keypoint. There are three output folders in this processing:-
 
-1) 00\_keypoints\_non\_normalized - this has one file per recording having all 25 Openpose keypoints in pixel coordinates
-1) 01\_keypoints\_all - this has one file per recording having all 25 Openpose keypoints followed by z-score normalization
-1) 02\_keypoints\_selected - this has one file per recording having only the keypoints for wrist and elbow of both hands. This is the only data used in the next step
+1) 00\_keypoints\_non\_normalized - this has one file per recording having all 25 Openpose keypoints in pixel coordinates at frame rate
+2) 01\_keypoints\_all - this has one file per recording having all 25 Openpose keypoints followed by z-score normalization at 10ms intervals
+3) 02\_keypoints\_selected - this has one file per recording having only the keypoints for wrist and elbow of both hands at 10ms intervals. This is the only data used in the next step
 
 Note that we do not have the same set of keypoints in 2D and 3D. The details are provided in K[eypoint Details](https://github.com/sujoyrc/hindustani_raga_dataset_processing/blob/main/KeypointDetail.xlsx)
 
-10\.Run the following
+8\.Run the following
+```
+cd ${ROOT\_DIR}/06\_multimodal\_processing
+python process\_multimodal\_data.py
+```
 
-11. cd ${ROOT\_DIR}/06\_multimodal\_processing
-11. python process\_multimodal\_data.py
-
-This process does the following:-[what about SavGol filter, interpolation and z-score normalization?)
+This process does the following:-
 
 1. Computes velocity (V) and accelaration (A) by a 101point biphasic filter on the position (P) coordinates of keypoints of interest. The document [Velocity and acceleration processing h](https://github.com/sujoyrc/hindustani_raga_dataset_processing/blob/main/Vel_and_accln_processing_details.pdf)as the details of the biphasic filter and the velocity and acceleration computation.
-1. Using the start and end times (i.e. the offsets) removes gesture information outside start and end time intervals and resets the time for the gesture information to zero corresponding to the start time. Then it combines the pitch and gesture for a certain video information based on the adjusted time.
+2. Using the start and end times (i.e. the offsets) removes gesture information outside start and end time intervals and resets the time for the gesture information to zero corresponding to the start time. Then it combines the pitch and gesture for a certain video information based on the adjusted time.
 3. Creates a master file per singer containing the gesture information (P+V+A) aligned with the pitch at 10ms intervals.
 19
