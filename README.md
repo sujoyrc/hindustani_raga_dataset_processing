@@ -181,9 +181,8 @@ The code for these steps is present in the file extract\_pitch\_contours.py
 
 Instructions to run the script:
 
-1) In the file extract\_pitch\_contours.py, change the variables INPUT\_FOLDER, OUTPUT\_FOLDERand FILEaccording to your directory structure. INPUT\_FOLDERshould contain the audio file that is to be pitch-extracted, and OUTPUT\_FOLDERshould be a folder where the csv file of pitch contour is to be stored.
-1) Run the script using the command:
-
+1) In the file extract\_pitch\_contours.py, change the variables INPUT\_FOLDER, OUTPUT\_FOLDER and FILE according to your directory structure. INPUT\_FOLDER should contain the audio file that is to be pitch-extracted, and OUTPUT\_FOLDER should be a folder where the csv file of pitch contour is to be stored.
+2) Run the script using the command:
    ```
    python extract\_pitch\_contours.py
    ```
