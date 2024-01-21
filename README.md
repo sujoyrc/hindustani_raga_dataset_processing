@@ -72,10 +72,9 @@ Tonic per singer is present in text files in 00\_data/03\_singer\_specific\_toni
 | Shree | 12 | 22 | 75 |
 | **ALL** | **109** | **199** | **664** |
 
+For every singer we also provide a tonic file containing the tonic for the singer. This is provided in 00\_data/02\_singer\_specific\_tonic
 
 ## Metadata for the recording
-
-
 
 |**Audio Metadata**|Sample Rate|48000 Hz|
 | - | - | - |
@@ -89,11 +88,9 @@ Tonic per singer is present in text files in 00\_data/03\_singer\_specific\_toni
 ||Video Coded|H.264 High L4.0|
 ||FPS|24|
 
-For every singer we also provide a tonic file containing the tonic for the singer. This is provided in 00\_data/02\_singer\_specific\_tonic
+## Processing Flowcharts
 
 The repository can process both single-view recordings as well as recordings from multiple views. The following diagrams give the process for 2D and 3D. We use [OpenPose f](https://github.com/CMU-Perceptual-Computing-Lab/openpose)or keypoint estimation from front view only and [VideoPose3D ](https://github.com/facebookresearch/VideoPose3D)for keypoint extraction from 3 views.
-
-## Processing Flowcharts
 
 | ![Processing with front view camera only](Process2D.png) | ![Processing with all 3 view cameras](Process2D.png) |
 |:---------------------------------------------------------:|:----------------------------------------------------:|
