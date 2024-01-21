@@ -121,7 +121,7 @@ For SM, the voice was loud enough so ANR was working well. But it was not workin
 
 **Durham Singers:**
 
-For Durham singers, low pass filtering followed by noise removal was working well. After than we could use Spleeter in order to be extra sure or we could do without it as well (the difference was negligible). For CC and AG, ANRonly and ANR+Spleeter were working much better than Spleeter only. For SCh the difference is not so significant. The tanpura is soft enough so that all methods give decent pitch contours but ANRis still better than Spleeter.
+For Durham singers, low pass filtering followed by noise removal was working well. After than we could use Spleeter in order to be extra sure or we could do without it as well (the difference was negligible). For CC and AG, ANR only and ANR + Spleeter were working much better than Spleeter only. For SCh the difference is not so significant. The tanpura is soft enough so that all methods give decent pitch contours but ANRis still better than Spleeter.
 
 Steps in ANR:
 
