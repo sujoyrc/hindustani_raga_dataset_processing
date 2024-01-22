@@ -192,7 +192,7 @@ The interpolated pitch contour will be saved as a csv file in OUTPUT\_FOLDER
 
 ### Part 1: From keypoints to time series
 
-1. We use OpenPose with front view camera only for 2D keypoint estimation and VideoPose 3D with 3D keypoint estimation. The list of identified keypoints using the two methods are different and tabulated below.
+1. We use OpenPose with front view camera only for 2D keypoint estimation and VideoPose3D with 3D keypoint estimation. The list of identified keypoints using the two methods are different and tabulated below. This repository uses the output of OpenPose / VideoPose3D on the videos as input to the processing. This data is provided in << INSERT LINK >>. This data is at frame rate (25 FPS for Durham singers, 24 FPS for Pune Singers).
 
 | KeypointName | OpenPose (2D) | VideoPose3D | VideoPose3D - has depth |
 |--------------|---------------|-------------|------------------------|
@@ -222,8 +222,37 @@ The interpolated pitch contour will be saved as a csv file in OUTPUT\_FOLDER
 | RSmallToe    | Y             | N           | N                      |
 | RHeel        | Y             | N           | N                      |
 
+2. We process the data and convert it to a time series for each of the keypoints.
+3. Nulls in data (based on confidence <0.3) are interpolated using linear interpolation.
+4. For low pass filtering, we use the Savitzky Golay (SavGoi) filter. The window length of the filter is chosen to be 13 and polynomial order to be 4. This was chosen in \cite{claytonraga} by manual inspection of the quality of filtering.
+5. Resampling – the time series was resampled at 10ms using scipy.signal.resample which is a FFT based resampling algorithm
+6. For each keypoint z-score normalization ($\frac{p -\mu}{\sigma}$) was done for the position $p$ per axis ($x,y,z$) using the mean $\mu$ and standard deviation $\sigma$ for that keypoint and axis across the entire recording. Z-score normalization was chosen since we want to retain the direction of motion with respect to the mean position of the keypoint. Thus a positive z-score on x-axis indicates a position to the right of the mean position and a negative z-score indicates a position to the left of the mean position. Similarly, a positive z-score on the y-axis indicates a position lower than the mean position whilst a negative z-score indicates a position above the mean position. For the z-axis a positive score means towards the camera and a negative score means away from the front-facing camera.
 
-### Velocity and Acceleration Estimation
+### Part 2: Velocity and Acceleration Estimation
+
+We discuss here how we estimate the velocities and acceleration profiles of the joints of interest using the extracted keypoints from OpenPose or VideoPose3D. A smoothened derivative is computed on the 2D / 3D joint position time series using convolution with a biphasic filter \cite{hermes1990vowel,rao2020structural}. We choose a smoothened derivative with controllable smoothing parameters to be able to control the velocity and acceleration profiles. We find that using a 101-point filter achieves a lowpass filtering of about 2 Hz, giving a sufficiently smooth and physiologically plausible movement acceleration profile\cite{pouw2021semantically, pearson2022gesture}. 
+
+![image](https://github.com/sujoyrc/hindustani_raga_dataset_processing/assets/8533584/be669afe-b153-47a0-9cd3-aaacaaaaba5b)
+
+The biphasic filter is defined by
+
+![image](https://github.com/sujoyrc/hindustani_raga_dataset_processing/assets/8533584/557a1e54-0efd-4621-b7e2-b2c2888e658f)
+
+
+We convolve the biphasic filter for differentiation of the position coordinates along each axis $(x,y,z)$ for each joint to obtain the velocity for that joint. We also compute the magnitude of the velocity vector from the individual components. 
+We note that convolution using the biphasic filter $h[n]$ defined above gives a negative value with respect to actual change - for example an increase in the values of $p_x[n]$ gives a negative value of $v_x[n]$. However, since we are using the absolute value of the velocity and acceleration, there is no impact on the final result.
+We take the Euclidean norm of the individual components of velocity and refer to $v[n]$ as velocity for the joint in the rest of the work. 
+
+![image](https://github.com/sujoyrc/hindustani_raga_dataset_processing/assets/8533584/9039406d-6549-47e8-b55f-5ce5a3c8d1ef)
+
+
+where $p_x[n]$, $p_y[n]$ and $p_z[n]$ are the position coordinates of the corresponding joint along $x$, $y$ and $z$ axes respectively and $*$ denotes the convolution operation. To prevent any artefacts from the differentiation operation, the position of each keypoint is extrapolated for 102 timesteps (one more than the filter length) before and after the time series by the starting and ending values respectively. This is under the assumption that these are the rest positions of the keypoint. 
+
+We use the same biphasic filter for differentiation of the velocity along each axis to obtain the acceleration along that axis as well as compute the magnitude of the acceleration vector.
+We take the Euclidean norm of the individual components of acceleration and refer to $a[n]$ as acceleration for the joint in the rest of the work.
+
+![image](https://github.com/sujoyrc/hindustani_raga_dataset_processing/assets/8533584/4e078b20-ac0c-4e3c-967d-1cdfe3772aa3)
+
 
 ## Using processed master files
 
