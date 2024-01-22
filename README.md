@@ -9,7 +9,7 @@
   - [Part 1: From Raw Audio to Source Separated Audio](#part-1-from-raw-audio-to-source-separated-audio)
   - [Part 2: From Source Separated Audio to Pitch Contours](#part-2-from-source-separated-audio-to-pitch-contours)
 - [Video Time Series Processing](#video-time-series-processing)
-  - [SavGol Filter, Resampling and Z-Score Normalization](#savgol-filter-resampling-and-z-score-normalization)
+  - [Part 1: From Keypoints to Time Series](#part-1-from-keypoints-to-time-series)
   - [Velocity and Acceleration Estimation](#velocity-and-acceleration-estimation)
 - [Using Processed Master Files](#using-processed-master-files)
 - [Replicating the Processing of This Repository](#replicating-the-processing-of-this-repository)
@@ -190,7 +190,38 @@ The interpolated pitch contour will be saved as a csv file in OUTPUT\_FOLDER
 
 ## Video Time Series Processing
 
-### SavGol Filter, Resampling and Z-Score Normalization 
+### Part 1: From keypoints to time series
+
+1. We use OpenPose with front view camera only for 2D keypoint estimation and VideoPose 3D with 3D keypoint estimation. The list of identified keypoints using the two methods are different and tabulated below.
+
+| KeypointName | OpenPose (2D) | VideoPose3D | VideoPose3D - has depth |
+|--------------|---------------|-------------|------------------------|
+| Nose         | Y             | Y           | N                      |
+| Neck         | Y             | N           | N                      |
+| RShoulder    | Y             | Y           | Y                      |
+| RElbow       | Y             | Y           | Y                      |
+| RWrist       | Y             | Y           | Y                      |
+| LShoulder    | Y             | Y           | Y                      |
+| LElbow       | Y             | Y           | Y                      |
+| LWrist       | Y             | Y           | Y                      |
+| MidHip       | Y             | N           | N                      |
+| RHip         | Y             | Y           | Y                      |
+| RKnee        | Y             | Y           | Y                      |
+| RAnkle       | Y             | Y           | Y                      |
+| LHip         | Y             | Y           | Y                      |
+| LKnee        | Y             | Y           | Y                      |
+| LAnkle       | Y             | Y           | Y                      |
+| REye         | Y             | Y           | N                      |
+| LEye         | Y             | Y           | N                      |
+| REar         | Y             | Y           | N                      |
+| LEar         | Y             | Y           | N                      |
+| LBigToe      | Y             | N           | N                      |
+| LSmallToe    | Y             | N           | N                      |
+| LHeel        | Y             | N           | N                      |
+| RBigToe      | Y             | N           | N                      |
+| RSmallToe    | Y             | N           | N                      |
+| RHeel        | Y             | N           | N                      |
+
 
 ### Velocity and Acceleration Estimation
 
