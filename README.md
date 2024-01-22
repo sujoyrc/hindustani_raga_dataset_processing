@@ -10,7 +10,7 @@
   - [Part 2: From Source Separated Audio to Pitch Contours](#part-2-from-source-separated-audio-to-pitch-contours)
 - [Video Time Series Processing](#video-time-series-processing)
   - [Part 1: From Keypoints to Time Series](#part-1-from-keypoints-to-time-series)
-  - [Part 2: Velocity and Acceleration Estimation](#velocity-and-acceleration-estimation)
+  - [Part 2: Velocity and Acceleration Estimation](#part-2-velocity-and-acceleration-estimation)
 - [Using Processed Master Files](#using-processed-master-files)
 - [Replicating the Processing of This Repository](#replicating-the-processing-of-this-repository)
   - [Before You Start](#before-you-start)
