@@ -17,7 +17,10 @@
   - [Data Processing](#data-processing)
 
 
-This is the code repository for multimodal processing of Hindustani Raga music. It covers the chain of processing as well as intermediate outputs for the following overall task: Set of Videos (mp4) of raga alap (or pakad) by a singer across 9 ragas are processed to obtain a CSVMasterfile containing the time series (sampled at 10 ms intervals) of singer pitch (cents with reference to singer tonic), gesture (3d position, velocity, acceleration) from selected keypoints (elbow, wrist). We eventually present: One per-singer: Masterfile, offsets info file linking video timestamps with masterfile timestamps and singer tonic.
+This is the code repository for multimodal processing of Hindustani Raga music. It covers the chain of processing as well as intermediate outputs for the following overall task: Set of Videos (mp4) of raga alap (or pakad) by a singer across 9 ragas are processed to obtain a CSV "masterfile" containing the time series (sampled at 10 ms intervals) of singer pitch (cents with reference to singer tonic), gesture (3d position, velocity, acceleration) from selected keypoints (elbow, wrist). We eventually present the following files (one each per-singer): 
+- Masterfile
+- Offsets information file linking video timestamps with masterfile timestamps
+- Singer tonic
 
 ## Summary of Contents of repository
 
@@ -38,7 +41,7 @@ This is the code repository for multimodal processing of Hindustani Raga music. 
 
 ## Dataset Details
 
-The dataset consists of recordings by 11singers (5 Male,6 Female) performing 9 ragas. Each singer has 2 alaps and 1 pakad recording per raga (with a few exceptions).
+The dataset consists of recordings by 11 singers (5 Male, 6 Female) performing 9 ragas. Each singer has 2 alaps and 1 pakad recording per raga (with a few exceptions).
 
 
 
@@ -57,7 +60,7 @@ The dataset consists of recordings by 11singers (5 Male,6 Female) performing 9 r
 |SS|F|9|9|18|60|
 |**All**|**5M,6F**|**9**|**109**|**199**|**664**|
 
-Tonic per singer is present in text files in 00\_data/03\_singer\_specific\_tonic Following are the ragas used in the recordings. Some raga names are abbreviated.
+Tonic per singer is present in text files in 00\_data/02\_singer\_specific\_tonic Following are the ragas used in the recordings. Some raga names are abbreviated.
 
 | **Raga** | **#Pakad** | **#Alap** | **Duration** |
 |----------|------------|-----------|--------------|
@@ -72,7 +75,7 @@ Tonic per singer is present in text files in 00\_data/03\_singer\_specific\_toni
 | Shree | 12 | 22 | 75 |
 | **ALL** | **109** | **199** | **664** |
 
-For every singer we also provide a tonic file containing the tonic for the singer. This is provided in 00\_data/02\_singer\_specific\_tonic
+For every singer, we also provide a tonic file containing the tonic for the singer. This is provided in 00\_data/02\_singer\_specific\_tonic
 
 ## Metadata for the recording
 
@@ -90,7 +93,7 @@ For every singer we also provide a tonic file containing the tonic for the singe
 
 ## Processing Flowcharts
 
-The repository can process both single-view recordings as well as recordings from multiple views. The following diagrams give the process for 2D and 3D. We use [OpenPose f](https://github.com/CMU-Perceptual-Computing-Lab/openpose)or keypoint estimation from front view only and [VideoPose3D ](https://github.com/facebookresearch/VideoPose3D)for keypoint extraction from 3 views.
+The repository can process both single-view and multiple-view recordings. The following diagrams show the processes for 2D and 3D. We use [OpenPose](https://github.com/CMU-Perceptual-Computing-Lab/openpose) for keypoint estimation from front view only and [VideoPose3D](https://github.com/facebookresearch/VideoPose3D) for keypoint extraction from 3 views.
 
 | ![Processing with front view camera only](Process2D.png) | ![Processing with all 3 view cameras](Process2D.png) |
 |:---------------------------------------------------------:|:----------------------------------------------------:|
@@ -101,11 +104,11 @@ The repository can process both single-view recordings as well as recordings fro
 
 ### Part 1: From Raw Audio to Source Separated Audio
 
-For Durham singers (AG, CC, SCh) we used **Spleetersource separation** (4 stem model) ([https://research.deezer.com/projects/spleeter.html)](https://research.deezer.com/projects/spleeter.html)
+For Durham singers (AG, CC, SCh) we used **Spleeter Source separation** (4 stem model) ([https://research.deezer.com/projects/spleeter.html)](https://research.deezer.com/projects/spleeter.html)
 
-For Pune singers (AK, AP, MG, MP, NM, RV, SM, SS) we used **Audacity Noise Removal** (called ANRhereupon) – the parameters are mentioned in the following explanation
+For Pune singers (AK, AP, MG, MP, NM, RV, SM, SS) we used **Audacity Noise Removal** (called ANR hereupon) – the parameters are mentioned in the following explanation
 
-This choice was made based on some trial and error. We had three choices to do the source separation:
+This choice was made based on some trial and error. We had three choices for the source separation:
 
 1) Using Spleeter Only
 1) Using ANR only
@@ -117,11 +120,11 @@ We noticed the following:
 
 **Pune Singers:**
 
-For SM, the voice was loud enough so ANR was working well. But it was not working better than Spleeter. For other Pune Singers ANR is working worse than Spleeter. So for new singers, using Spleeter only was the best. Audacity noise removal is not giving any improvement, irrespective of whether we use Spleeter or not. Because of the loud tanpura, we need the aggressive splitting of Spleeter to get the separated vocals.
+For SM, the voice was loud enough so ANR was working well. But it was not working better than Spleeter. For other Pune Singers ANR is working worse than Spleeter. So for new singers, using Spleeter only was the best. Audacity noise removal is not improving, irrespective of whether we use Spleeter or not. Because of the loud tanpura, we need the aggressive splitting of Spleeter to get the separated vocals.
 
 **Durham Singers:**
 
-For Durham singers, low pass filtering followed by noise removal was working well. After than we could use Spleeter in order to be extra sure or we could do without it as well (the difference was negligible). For CC and AG, ANR only and ANR + Spleeter were working much better than Spleeter only. For SCh the difference is not so significant. The tanpura is soft enough so that all methods give decent pitch contours but ANRis still better than Spleeter.
+For Durham singers, low pass filtering followed by noise removal worked well. After that, we could use Spleeter to be extra sure or we could do without it as well (the difference was negligible). For CC and AG, ANR only and ANR + Spleeter were working much better than Spleeter only. For SCh the difference is not so significant. The tanpura is soft enough so that all methods give decent pitch contours but ANR is still better than Spleeter.
 
 Steps in ANR:
 
@@ -130,15 +133,15 @@ Steps in ANR:
 
 The noise profiles and parameter values chosen are mentioned later. For details on how to use Audacity Noise Removal, check this page: <https://manual.audacityteam.org/man/noise_reduction.html>
 
-For AG and CC, ANR only worked the best. For SCh, all three were similar. So for old singers we used ANR only, to not risk losing the vocals because of Spleeter.
+For AG and CC, ANR only worked the best. For SCh, all three were similar. So for Durham singers, we used ANR only, to not risk losing the vocals because of Spleeter.
 
-So for Durham singers the pipeline is:
+So for Durham singers, the pipeline is:
 
-1. Filtering using lowpass filter of 2400 Hz cutoff and 48 dBrolloff (in Audacity: Effects → EQ and Filters → Low-pass filter) For steps 2 and 3: (Effects → Noise Reduction and Repair → Noise Reduction)
+1. Filtering using a lowpass filter of 2400 Hz cutoff and 48 dB roll-off (in Audacity: Effects → EQ and Filters → Low-pass filter) For steps 2 and 3: (Effects → Noise Reduction and Repair → Noise Reduction)
 2. Choose noise profile: (note: noise profile is chosen after filtering, not before)
 3. Noise removal
 
-Based on trial-error and tuning the parameters, the noise profiles and parameters chosen finally, for the Durham singers were: **Singer Noise Sensitivity Frequency Noise Profile (for ragas except Noise profile (forBageshri) 
+Based on trial-error and tuning the parameters, the noise profiles and parameters chosen finally, for the Durham singers were: 
 
 | **Singer** | **Noise Reduction (dB)** | **Sensitivity** | **Frequency smoothing (bands)** | **Noise Profile (for ragas except Bageshri)** | **Noise profile (for Bageshri)\*** |
 |------------|---------------------------|-----------------|----------------------------------|-----------------------------------------------|----------------------------------|
@@ -147,16 +150,16 @@ Based on trial-error and tuning the parameters, the noise profiles and parameter
 | SCh        | 12                        | 4               | 0                                | SCh_Aalap1_Shree – 0 to 4.5s                  | SCh_Aalap2_Bag – 3 min 7.0 s to 3 min 12.3 s |
 
 
-\* The reason for using different noise profiles for Bageshri was that in Bageshri the tanpura is played in cycles of Sa-Ma instead of Sa-Pa. Hence, the spectra of tanpura in raga Bageshri is different than that in other ragas.
+\* The reason for using different noise profiles for Bageshri was that in Bageshri the tanpura is played in cycles of Sa-Ma instead of Sa-Pa. Hence, the spectra of tanpura in raga Bageshri is different than those in other ragas.
 
-Using this, we got the source separated audios, which are stored in the folder Source\_Separated\_Audios under two subfolders:
+Using this, we got the source-separated audios, which are stored in the folder Source\_Separated\_Audios under two subfolders:
 
 - Old\_Singers\_ANR: Durham singer audios separated using Audacity Noise Removal
 - New\_Singers\_Spleeter: Pune singer audios separated using Spleeter
 
 ### Part 2: From Source Separated Audio to Pitch Contours
 
-Once we have the source separated audio, we use the Python APIfor Praat software, namely Parselmouth, to derive the pitch contour from the audio using filtered autocorrelation method. Parselmouth pitch detector has several parameters that can be tuned for increased accuracy of the pitch contour. Based on extraction performance and comparison with the audio done by manual listening to the sonified contour, we found that the following values (see table) worked best on our audios. The tonic is fixed for a given singer, the other parameters are tuned. The tuning was done mainly with the intention to avoid octave errors and false silences (regions which are actually voiced but predicted wrongly as silences).
+Once we have the source-separated audio, we use the Python API for Praat software, namely [Parselmouth](https://parselmouth.readthedocs.io/en/stable/), to derive the pitch contour from the audio using filtered autocorrelation method. Parselmouth pitch detector has several parameters that can be tuned for increased accuracy of the pitch contour. Based on extraction performance and comparison with the audio done by manual listening to the sonified contour, we found that the following values (see table) worked best on our audio. The tonic is fixed for a given singer, the other parameters are tuned. The tuning was done mainly to avoid octave errors and false silences (regions which are actually voiced but predicted wrongly as silences).
 
 
 
@@ -174,7 +177,7 @@ Attenuation at ceiling: 0.03 for all
 
 The main steps in pitch extraction were:
 
-1) Parselmouth pitch extraction at 10 ms intervals on source separated audio using above parameter values
+1) Parselmouth pitch extraction at 10 ms intervals on source-separated audio using the above parameter values
 1) Linear Interpolation of silences less than 400 ms
 
 The code for these steps is present in the file extract\_pitch\_contours.py
@@ -192,7 +195,7 @@ The interpolated pitch contour will be saved as a csv file in OUTPUT\_FOLDER
 
 ### Part 1: From keypoints to time series
 
-1. We use OpenPose with front view camera only for 2D keypoint estimation and VideoPose3D with 3D keypoint estimation. The list of identified keypoints using the two methods are different and tabulated below. This repository uses the output of OpenPose / VideoPose3D on the videos as input to the processing. This data is provided in << INSERT LINK >>. This data is at frame rate (25 FPS for Durham singers, 24 FPS for Pune Singers).
+1. We use OpenPose with front view camera only for 2D keypoint estimation and VideoPose3D with 3D keypoint estimation. The list of identified key points using the two methods are different and tabulated below. This repository uses the output of OpenPose / VideoPose3D on the videos as input to the processing. This data is provided in << INSERT LINK >>. This data is at frame rate (25 FPS for Durham singers, 24 FPS for Pune Singers).
 
 | KeypointName | OpenPose (2D) | VideoPose3D | VideoPose3D - has depth |
 |--------------|---------------|-------------|------------------------|
@@ -222,11 +225,11 @@ The interpolated pitch contour will be saved as a csv file in OUTPUT\_FOLDER
 | RSmallToe    | Y             | N           | N                      |
 | RHeel        | Y             | N           | N                      |
 
-2. We process the data and convert it to a time series for each of the keypoints.
+2. We process the data and convert it to a time series for each of the key points.
 3. Nulls in data (based on confidence <0.3) are interpolated using linear interpolation.
-4. For low pass filtering, we use the Savitzky Golay (SavGoi) filter. The window length of the filter is chosen to be 13 and polynomial order to be 4. This was chosen in \cite{claytonraga} by manual inspection of the quality of filtering.
+4. For low-pass filtering, we use the Savitzky Golay (SavGoi) filter. The window length of the filter is chosen to be 13 and the polynomial order to be 4. This was chosen in \cite{claytonraga} by manual inspection of the quality of filtering.
 5. Resampling – the time series was resampled at 10ms using scipy.signal.resample which is a FFT based resampling algorithm
-6. For each keypoint z-score normalization ($\frac{p -\mu}{\sigma}$) was done for the position $p$ per axis ($x,y,z$) using the mean $\mu$ and standard deviation $\sigma$ for that keypoint and axis across the entire recording. Z-score normalization was chosen since we want to retain the direction of motion with respect to the mean position of the keypoint. Thus a positive z-score on x-axis indicates a position to the right of the mean position and a negative z-score indicates a position to the left of the mean position. Similarly, a positive z-score on the y-axis indicates a position lower than the mean position whilst a negative z-score indicates a position above the mean position. For the z-axis a positive score means towards the camera and a negative score means away from the front-facing camera.
+6. For each keypoint z-score normalization ($\frac{p -\mu}{\sigma}$) was done for the position $p$ per axis ($x,y,z$) using the mean $\mu$ and standard deviation $\sigma$ for that keypoint and axis across the entire recording. Z-score normalization was chosen since we want to retain the direction of motion concerning the mean position of the key point. Thus a positive z-score on the x-axis indicates a position to the right of the mean position and a negative z-score indicates a position to the left of the mean position. Similarly, a positive z-score on the y-axis indicates a position lower than the mean position whilst a negative z-score indicates a position above the mean position. For the z-axis, a positive score means towards the camera and a negative score means away from the front-facing camera.
 
 ### Part 2: Velocity and Acceleration Estimation
 
