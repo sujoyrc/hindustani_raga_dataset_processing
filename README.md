@@ -226,13 +226,13 @@ The interpolated pitch contour will be saved as a csv file in OUTPUT\_FOLDER
 
 2. We process the data and convert it to a time series for each of the key points.
 3. Nulls in data (based on confidence <0.3) are interpolated using linear interpolation.
-4. For low-pass filtering, we use the Savitzky Golay (SavGol) filter. The window length of the filter is chosen to be 13 and the polynomial order to be 4. This was chosen in \cite{claytonraga} by manual inspection of the quality of filtering.
+4. For low-pass filtering, we use the Savitzky Golay (SavGol) filter. The window length of the filter is chosen to be 13 and the polynomial order to be 4.
 5. Resampling – the time series was resampled at 10ms using scipy.signal.resample which is an FFT-based resampling algorithm
 6. For each keypoint z-score normalization ($\frac{p -\mu}{\sigma}$) was done for the position $p$ per axis ($x,y,z$) using the mean $\mu$ and standard deviation $\sigma$ for that keypoint and axis across the entire recording. Z-score normalization was chosen since we want to retain the direction of motion concerning the mean position of the key point. Thus a positive z-score on the x-axis indicates a position to the right of the mean position and a negative z-score indicates a position to the left of the mean position. Similarly, a positive z-score on the y-axis indicates a position lower than the mean position whilst a negative z-score indicates a position above the mean position. For the z-axis, a positive score means towards the camera and a negative score means away from the front-facing camera.
 
 ### Part 2: Velocity and Acceleration Estimation
 
-We discuss here how we estimate the velocities and acceleration profiles of the joints of interest using the extracted keypoints from OpenPose or VideoPose3D. A smoothened derivative is computed on the 2D / 3D joint position time series using convolution with a biphasic filter \cite{hermes1990vowel,rao2020structural}. We choose a smoothened derivative with controllable smoothing parameters to be able to control the velocity and acceleration profiles. We find that using a 101-point filter achieves a lowpass filtering of about 2 Hz, giving a sufficiently smooth and physiologically plausible movement acceleration profile \cite{pouw2021semantically, pearson2022gesture}. 
+We discuss here how we estimate the velocities and acceleration profiles of the joints of interest using the extracted keypoints from OpenPose or VideoPose3D. A smoothened derivative is computed on the 2D / 3D joint position time series using convolution with a biphasic filter \cite{hermes1990vowel,rao2020structural}. We choose a smoothened derivative with controllable smoothing parameters to be able to control the velocity and acceleration profiles. We find that using a 101-point filter achieves a lowpass filtering of about 2 Hz, giving a sufficiently smooth and physiologically plausible movement acceleration profile. 
 
 ![image](https://github.com/sujoyrc/hindustani_raga_dataset_processing/assets/8533584/be669afe-b153-47a0-9cd3-aaacaaaaba5b)
 
