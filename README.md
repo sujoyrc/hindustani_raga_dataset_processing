@@ -18,9 +18,9 @@
 
 
 This is the code repository for multimodal processing of Hindustani Raga music. It covers the chain of processing as well as intermediate outputs for the following overall task: Set of Videos (mp4) of raga alap (or pakad) by a singer across 9 ragas are processed to obtain a CSV "masterfile" containing the time series (sampled at 10 ms intervals) of singer pitch (cents with reference to singer tonic), gesture (3d position, velocity, acceleration) from selected keypoints (elbow, wrist). We eventually present the following files (one each per-singer): 
-- Masterfile
-- Offsets information file linking video timestamps with masterfile timestamps
-- Singer tonic
+- Masterfile: A csv file containing processed pitch and gesture contours for that singer
+- Offsets information: A text file containing start and end timestamps, to link video timestamps with masterfile timestamps
+- Singer tonic: A text file containing the singer's tonic in Hz
 
 ## Summary of Contents of repository
 
@@ -104,9 +104,9 @@ The repository can process both single-view and multiple-view recordings. The fo
 
 ### Part 1: From Raw Audio to Source Separated Audio
 
-For Durham singers (AG, CC, SCh) we used **Spleeter Source separation** (4 stem model) ([https://research.deezer.com/projects/spleeter.html)](https://research.deezer.com/projects/spleeter.html)
+For Durham singers (AG, CC, SCh) we used [**Spleeter Source separation**](https://research.deezer.com/projects/spleeter.html) (4 stem model) 
 
-For Pune singers (AK, AP, MG, MP, NM, RV, SM, SS) we used **Audacity Noise Removal** (called ANR hereupon) – the parameters are mentioned in the following explanation
+For Pune singers (AK, AP, MG, MP, NM, RV, SM, SS) we used [**Audacity Noise Removal**](https://manual.audacityteam.org/man/noise_reduction.html) (called ANR hereupon) – the parameters are mentioned in the following explanation
 
 This choice was made based on some trial and error. We had three choices for the source separation:
 
@@ -195,7 +195,7 @@ The interpolated pitch contour will be saved as a csv file in OUTPUT\_FOLDER
 
 ### Part 1: From keypoints to time series
 
-1. We use OpenPose with front view camera only for 2D keypoint estimation and VideoPose3D with 3D keypoint estimation. The list of identified key points using the two methods are different and tabulated below. This repository uses the output of OpenPose / VideoPose3D on the videos as input to the processing. This data is provided in << INSERT LINK >>. This data is at frame rate (25 FPS for Durham singers, 24 FPS for Pune Singers).
+1. We use OpenPose with front view camera only for 2D keypoint estimation and VideoPose3D with 3D keypoint estimation. The list of identified key points using the two methods are different and are tabulated below. This repository uses the output of OpenPose / VideoPose3D on the videos as input to the processing. This data is provided in << INSERT LINK >>. This data is at frame rate (25 FPS for Durham singers, 24 FPS for Pune Singers).
 
 | KeypointName | OpenPose (2D) | VideoPose3D | VideoPose3D - has depth |
 |--------------|---------------|-------------|------------------------|
@@ -227,13 +227,13 @@ The interpolated pitch contour will be saved as a csv file in OUTPUT\_FOLDER
 
 2. We process the data and convert it to a time series for each of the key points.
 3. Nulls in data (based on confidence <0.3) are interpolated using linear interpolation.
-4. For low-pass filtering, we use the Savitzky Golay (SavGoi) filter. The window length of the filter is chosen to be 13 and the polynomial order to be 4. This was chosen in \cite{claytonraga} by manual inspection of the quality of filtering.
-5. Resampling – the time series was resampled at 10ms using scipy.signal.resample which is a FFT based resampling algorithm
+4. For low-pass filtering, we use the Savitzky Golay (SavGol) filter. The window length of the filter is chosen to be 13 and the polynomial order to be 4. This was chosen in \cite{claytonraga} by manual inspection of the quality of filtering.
+5. Resampling – the time series was resampled at 10ms using scipy.signal.resample which is an FFT-based resampling algorithm
 6. For each keypoint z-score normalization ($\frac{p -\mu}{\sigma}$) was done for the position $p$ per axis ($x,y,z$) using the mean $\mu$ and standard deviation $\sigma$ for that keypoint and axis across the entire recording. Z-score normalization was chosen since we want to retain the direction of motion concerning the mean position of the key point. Thus a positive z-score on the x-axis indicates a position to the right of the mean position and a negative z-score indicates a position to the left of the mean position. Similarly, a positive z-score on the y-axis indicates a position lower than the mean position whilst a negative z-score indicates a position above the mean position. For the z-axis, a positive score means towards the camera and a negative score means away from the front-facing camera.
 
 ### Part 2: Velocity and Acceleration Estimation
 
-We discuss here how we estimate the velocities and acceleration profiles of the joints of interest using the extracted keypoints from OpenPose or VideoPose3D. A smoothened derivative is computed on the 2D / 3D joint position time series using convolution with a biphasic filter \cite{hermes1990vowel,rao2020structural}. We choose a smoothened derivative with controllable smoothing parameters to be able to control the velocity and acceleration profiles. We find that using a 101-point filter achieves a lowpass filtering of about 2 Hz, giving a sufficiently smooth and physiologically plausible movement acceleration profile\cite{pouw2021semantically, pearson2022gesture}. 
+We discuss here how we estimate the velocities and acceleration profiles of the joints of interest using the extracted keypoints from OpenPose or VideoPose3D. A smoothened derivative is computed on the 2D / 3D joint position time series using convolution with a biphasic filter \cite{hermes1990vowel,rao2020structural}. We choose a smoothened derivative with controllable smoothing parameters to be able to control the velocity and acceleration profiles. We find that using a 101-point filter achieves a lowpass filtering of about 2 Hz, giving a sufficiently smooth and physiologically plausible movement acceleration profile \cite{pouw2021semantically, pearson2022gesture}. 
 
 ![image](https://github.com/sujoyrc/hindustani_raga_dataset_processing/assets/8533584/be669afe-b153-47a0-9cd3-aaacaaaaba5b)
 
@@ -307,12 +307,14 @@ On the other hand, if you want to download the raw data and replicate our proces
 
 ### Before you start
 
-Preparation of virtual environment cd to the directory where you want to install a python virtual environment
+Prepare a virtual environment, cd to the directory where you want to install a python virtual environment:
 
 ```
 python -m venv .
 source bin/activate
-Downloading this repository and installing required packages
+```
+Download this repository and install the required packages:
+```
 git clone git@github.com:sujoyrc/hindustani\_raga\_dataset\_processing.git cd hindustani\_raga\_dataset\_processing
 pip install -r requirements.txt
 ```
@@ -335,13 +337,14 @@ Rest of the files you need to download from the links below.
 
 2a. Download all the recordings from <<INSERTLINK>>. This link has only the front view recordings. 3a. Save the recordings in 00\_data/00\_orig\_video 4a. Download the json files from <<INSERTLINK>>and save them in 01\_openpose\_output. This will be downloaded as one tar.json.gz file per recording. *Alternatively*, create the Openpose json files using the instructions for
 
-[Openpose Installation ](https://github.com/CMU-Perceptual-Computing-Lab/openpose#installation)[Openpose Quick Start Overview](https://github.com/CMU-Perceptual-Computing-Lab/openpose#quick-start-overview)
+[Openpose Installation ](https://github.com/CMU-Perceptual-Computing-Lab/openpose#installation)
+[Openpose Quick Start Overview](https://github.com/CMU-Perceptual-Computing-Lab/openpose#quick-start-overview)
 
 These two steps should create a json file per frame per video. Store the json files in 01\_json\_files. **If you are processing with CAMERA\_VIEWS=3D then follow the steps 2b-4b**:-
 
 2b. Download all the recordings from <<INSERTLINK>>. This link has the recordings for all 3 views 3b. Save the recordings in 00\_data/00\_orig\_video 4b. Download the output files of VideoPose 3D from <<INSERTLINK>>and save them in 01\_videopose\_output.
 
-*Alternatively*, create the 3D output for VideoPose3D by following the instructions in V[ideoPose3D: Inference in the Wild.](https://github.com/facebookresearch/VideoPose3D/blob/main/INFERENCE.md) Note that each recording with the detections of 3 views should be made into a separate custom dataset. .
+*Alternatively*, create the 3D output for VideoPose3D by following the instructions in [VideoPose3D: Inference in the Wild.](https://github.com/facebookresearch/VideoPose3D/blob/main/INFERENCE.md) Note that each recording with the detections of 3 views should be made into a separate custom dataset. .
 
 5. Run the following
 
@@ -355,7 +358,7 @@ Ensure the .sh files have execute (+x) permission for user in question.
 
 The output of this process will create the pitch contours in cents at 10 ms intervals. Unvoiced segments less than 400 ms are interpolated by a linear interpolation. Conversion from Hz to cents is done based on the tonic files in 00\_data/03\_singer\_specific\_tonic. There will be a separate output csv file for each recording present in 00\_data/00\_orig\_video
 
-Note that this does not do the separate audacity based processing (source separation) for 3 singers - AG / CC / SCh. If you would like to do this follow the instructions in [ReadMePitchExtraction.docx f](https://github.com/sujoyrc/hindustani_raga_dataset_processing/blob/main/ReadmePitchExtraction.docx)or these singers.
+Note that this does not do the separate audacity based processing (source separation) for 3 singers - AG / CC / SCh. If you would like to do this, either check Part 2 of [Audio Processing and Pitch Extraction](#audio-processing-and-pitch-extraction) above or this document: [ReadMePitchExtraction.docx](https://github.com/sujoyrc/hindustani_raga_dataset_processing/blob/main/ReadmePitchExtraction.docx)
 
 7\. Run the following. This code will use the CAMERA\_VIEWS variable.
 
@@ -372,7 +375,7 @@ This process will create the gesture coordinates for each keypoint. There are th
 2) 01\_keypoints\_all - this has one file per recording having all 25 Openpose keypoints followed by z-score normalization at 10ms intervals
 3) 02\_keypoints\_selected - this has one file per recording having only the keypoints for wrist and elbow of both hands at 10ms intervals. This is the only data used in the next step
 
-Note that we do not have the same set of keypoints in 2D and 3D. The details are provided in K[eypoint Details](https://github.com/sujoyrc/hindustani_raga_dataset_processing/blob/main/KeypointDetail.xlsx)
+Note that we do not have the same set of keypoints in 2D and 3D. The details are provided in [Keypoint Details](https://github.com/sujoyrc/hindustani_raga_dataset_processing/blob/main/KeypointDetail.xlsx)
 
 8\.Run the following
 ```
@@ -382,7 +385,6 @@ python process\_multimodal\_data.py
 
 This process does the following:-
 
-1. Computes velocity (V) and accelaration (A) by a 101point biphasic filter on the position (P) coordinates of keypoints of interest. The document [Velocity and acceleration processing h](https://github.com/sujoyrc/hindustani_raga_dataset_processing/blob/main/Vel_and_accln_processing_details.pdf)as the details of the biphasic filter and the velocity and acceleration computation.
+1. Computes velocity (V) and acceleration (A) by a 101-point biphasic filter on the position (P) coordinates of keypoints of interest. The document [Velocity and acceleration processing](https://github.com/sujoyrc/hindustani_raga_dataset_processing/blob/main/Vel_and_accln_processing_details.pdf) has the details of the biphasic filter and the velocity and acceleration computation.
 2. Using the start and end times (i.e. the offsets) removes gesture information outside start and end time intervals and resets the time for the gesture information to zero corresponding to the start time. Then it combines the pitch and gesture for a certain video information based on the adjusted time.
-3. Creates a master file per singer containing the gesture information (P+V+A) aligned with the pitch at 10ms intervals.
-19
+3. Creates a master file per singer containing the gesture information (P+V+A) aligned with the pitch at 10 ms intervals.
