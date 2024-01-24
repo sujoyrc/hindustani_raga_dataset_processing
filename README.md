@@ -11,6 +11,7 @@
   - [Part 1: From Keypoints to Time Series](#part-1-from-keypoints-to-time-series)
   - [Part 2: Velocity and Acceleration Estimation](#part-2-velocity-and-acceleration-estimation)
 - [Using Processed Master Files](#using-processed-master-files)
+- [Use in Previous Work](#use-in-previous-work)
 - [Replicating the Processing of This Repository](#replicating-the-processing-of-this-repository)
   - [Before You Start](#before-you-start)
   - [Data Processing](#data-processing)
@@ -40,9 +41,8 @@ This is the code repository for multimodal processing of Hindustani Raga music. 
 
 ## Dataset Details
 
-The dataset consists of recordings by 11 singers (5 Male, 6 Female) performing 9 ragas. Each singer has 2 alaps and 1 pakad recording per raga (with a few exceptions).
-
-
+The dataset consists of recordings by 11 singers (5 Male, 6 Female) performing 9 ragas. Each singer has 2 alaps and 1 pakad recording per raga (with a few exceptions). This dataset is an expansion of the dataset [Raga Pose Estimation](https://github.com/DurhamARC/raga-pose-estimation) containing the recordings of 3 singers (AG/CC/SCh) singing the same 9 ragas. We refer to the singers in the earlier version of this dataset as Durham Singers (since the recording was done in Durham) and the rest of the singers as Pune Singers in our discussion below. 
+ 
 
 |**Singer**|**Gender**|**Ragas**|**#Pakad**|**#Alap**|**Dur(min)**|
 | - | - | - | - | - | - |
@@ -299,6 +299,18 @@ The master files have the following columns:-
 |**Total Numberof columns**|**47**||
 
 **Note:** Position coordinates are z-score normalized over the entire recording. There is no normalization done for velocity and acceleration columns.
+
+## Use in previous work
+
+The initial version of this dataset has been used in 
+
+1. M. Clayton, P. Rao, N. Shikarpur, S. Roychowdhury, and J. Li, “Raga classification from vocal performances using multimodal analysis,” in Proceedings
+of the 23rd International Society for Music Information Retrieval Conference,ISMIR, Bengaluru, India, pp. 283-290., 2022.
+
+The full version of this dataset has been used in 
+
+1. S. M. Nadkarni, S. Roychowdhury, P. Rao, and M. Clayton, “Exploring the correspondence of melodic contour with gesture in raga alap singing,” in Pro-
+ceedings of the 24th International Society for Music Information Retrieval Conference, ISMIR, Milan, Italy 2023
 
 ## Replicating the processing of this repository
 
