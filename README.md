@@ -305,7 +305,7 @@ The master files have the following columns:-
 The initial version of this dataset has been used in 
 
 1. M. Clayton, P. Rao, N. Shikarpur, S. Roychowdhury, and J. Li, “Raga classification from vocal performances using multimodal analysis,” in Proceedings
-of the 23rd International Society for Music Information Retrieval Conference,ISMIR, Bengaluru, India, pp. 283-290., 2022.
+of the 23rd International Society for Music Information Retrieval Conference,ISMIR, Bengaluru, India, pp. 283-290, 2022.
 
 The full version of this dataset has been used in 
 
