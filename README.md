@@ -1,6 +1,5 @@
 # Contents
 
-# Table of Contents
 - [Summary of Contents of Repository](#summary-of-contents-of-repository)
 - [Dataset Details](#dataset-details)
 - [Metadata For The Recording](#metadata-for-the-recording)
