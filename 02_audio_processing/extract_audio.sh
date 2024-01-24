@@ -9,7 +9,7 @@
 
 INPUT_VIDEO_DIRECTORY="../00_data/00_orig_video"
 INPUT_START_AND_STOP_TIMES="../00_data/01_start_and_stop_times"
-OUTPUT_CROPPED_AUDIO_DIRECTORY="../00_data/02_audio_cropped"
+OUTPUT_CROPPED_AUDIO_DIRECTORY="../00_data/03_audio_cropped"
 
 for each_file in `ls $INPUT_VIDEO_DIRECTORY/*.mp4`
 do

@@ -16,7 +16,7 @@
 #   Output is produced based on source separation of spleeter only. However audacity based source separation is of higher quality for AG/CC/SCh singers
 # 
 
-SOURCE_DIR="../00_data/02_audio_cropped"
+SOURCE_DIR="../00_data/03_audio_cropped"
 TARGET_DIR="../03_audio_processing_output"
 SPLIT_AUDIO_DIRECTORY=${TARGET_DIR}/"01_source_separated_audio"
 PITCH_CONTOUR_DIRECTORY=${TARGET_DIR}/"02_pitch_contour_dir"
