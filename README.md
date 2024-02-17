@@ -14,6 +14,7 @@
 - [Use in Previous Work](#use-in-previous-work)
 - [Replicating the Processing of This Repository](#replicating-the-processing-of-this-repository)
   - [Before You Start](#before-you-start)
+  - [Downloading the Data](#downloading-the-data)
   - [Data Processing](#data-processing)
 
 
@@ -181,15 +182,6 @@ The main steps in pitch extraction were:
 
 The code for these steps is present in the file extract\_pitch\_contours.py
 
-Instructions to run the script:
-
-1) In the file extract\_pitch\_contours.py, change the variables INPUT\_FOLDER, OUTPUT\_FOLDER and FILE according to your directory structure. INPUT\_FOLDER should contain the audio file that is to be pitch-extracted, and OUTPUT\_FOLDER should be a folder where the csv file of pitch contour is to be stored.
-2) Run the script using the command:
-   ```
-   python extract\_pitch\_contours.py
-   ```
-The interpolated pitch contour will be saved as a csv file in OUTPUT\_FOLDER
-
 ## Video Time Series Processing
 
 ### Part 1: From keypoints to time series
@@ -258,7 +250,7 @@ We take the Euclidean norm of the individual components of acceleration and refe
 
 ## Using processed master files
 
-If you wish to access directly the final processed master files - one per singer - please download them from << INSERTLINK>>
+If you wish to access directly the final processed master files - one per singer - please download them from ![Data Archiving Project](https://iitbacin-my.sharepoint.com/:f:/g/personal/214077004_iitb_ac_in/Ejhb_G5MRDZErnGJ_bq-zmcBrfjlgPxJ16uEZjBwEvtOyg?e=xrDV1D)
 
 Below is a sample of the master file. Only columns for right wrist are shown here. There would be similar columns for left wrist and both elbows.
 
@@ -329,6 +321,8 @@ Download this repository and install the required packages:
 git clone git@github.com:sujoyrc/hindustani\_raga\_dataset\_processing.git cd hindustani\_raga\_dataset\_processing
 pip install -r requirements.txt
 ```
+### Downloading the data
+
 
 ### Data Processing
 
@@ -355,13 +349,14 @@ These two steps should create a json file per frame per video. Store the json fi
 
 2b. Download all the recordings from <<INSERTLINK>>. This link has the recordings for all 3 views 3b. Save the recordings in 00\_data/00\_orig\_video 4b. Download the output files of VideoPose 3D from <<INSERTLINK>>and save them in 01\_videopose\_output.
 
-*Alternatively*, create the 3D output for VideoPose3D by following the instructions in [VideoPose3D: Inference in the Wild.](https://github.com/facebookresearch/VideoPose3D/blob/main/INFERENCE.md) Note that each recording with the detections of 3 views should be made into a separate custom dataset. .
+*Alternatively*, create the 3D output for VideoPose3D by following the instructions in [VideoPose3D: Inference in the Wild.](https://github.com/facebookresearch/VideoPose3D/blob/main/INFERENCE.md) Note that each recording with the detections of 3 views should be made into a separate custom dataset. 
 
-5. Run the following
+3.  **Audio processing** - Instructions to run the pitch contour extraction script:
 
+1) Place the source separated audio in 00_data/01_source_separated_audio
+2) Run the script using the command:
 ```
 cd ${ROOT\_DIR}/02\_audio\_processing
-./extract\_audio.sh
 ./process\_audio.sh
 ```
 
@@ -369,9 +364,7 @@ Ensure the .sh files have execute (+x) permission for user in question.
 
 The output of this process will create the pitch contours in cents at 10 ms intervals. Unvoiced segments less than 400 ms are interpolated by a linear interpolation. Conversion from Hz to cents is done based on the tonic files in 00\_data/03\_singer\_specific\_tonic. There will be a separate output csv file for each recording present in 00\_data/00\_orig\_video
 
-Note that this does not do the separate audacity based processing (source separation) for 3 singers - AG / CC / SCh. If you would like to do this, either check Part 2 of [Audio Processing and Pitch Extraction](#audio-processing-and-pitch-extraction) above or this document: [ReadMePitchExtraction.docx](https://github.com/sujoyrc/hindustani_raga_dataset_processing/blob/main/ReadmePitchExtraction.docx)
-
-7\. Run the following. This code will use the CAMERA\_VIEWS variable.
+4\. **Video Processing** - Run the following. This code will use the CAMERA\_VIEWS variable.
 
 ```
 cd ${ROOT\_DIR}/04\_video\_processing 
@@ -386,9 +379,7 @@ This process will create the gesture coordinates for each keypoint. There are th
 2) 01\_keypoints\_all - this has one file per recording having all 25 Openpose keypoints followed by z-score normalization at 10ms intervals
 3) 02\_keypoints\_selected - this has one file per recording having only the keypoints for wrist and elbow of both hands at 10ms intervals. This is the only data used in the next step
 
-Note that we do not have the same set of keypoints in 2D and 3D. The details are provided in [Keypoint Details](https://github.com/sujoyrc/hindustani_raga_dataset_processing/blob/main/KeypointDetail.xlsx)
-
-8\.Run the following
+5\.**Multimodal Processing** - Run the following
 ```
 cd ${ROOT\_DIR}/06\_multimodal\_processing
 python process\_multimodal\_data.py
