@@ -104,15 +104,15 @@ The repository can process both single-view and multiple-view recordings. The fo
 
 ### Part 1: From Raw Audio to Source Separated Audio
 
-For Durham singers (AG, CC, SCh) we used [**Spleeter Source separation**](https://research.deezer.com/projects/spleeter.html) (4 stem model) 
+For Pune singers (AK, AP, MG, MP, NM, RV, SM, SS) we used [**Spleeter Source separation**](https://research.deezer.com/projects/spleeter.html) (4 stem model) 
 
-For Pune singers (AK, AP, MG, MP, NM, RV, SM, SS) we used [**Audacity Noise Removal**](https://manual.audacityteam.org/man/noise_reduction.html) (called ANR hereupon) – the parameters are mentioned in the following explanation
+For Durham singers (AG, CC, SCh) we used [**Audacity Noise Removal**](https://manual.audacityteam.org/man/noise_reduction.html) (called ANR hereupon) – the parameters are mentioned in the following explanation
 
 This choice was made based on some trial and error. We had three choices for the source separation:
 
 1) Using Spleeter Only
-1) Using ANR only
-1) Using ANR followed by Spleeter (ANR+Spleeter)
+2) Using ANR only
+3) Using ANR followed by Spleeter (ANR+Spleeter)
 
 The drawback of using Spleeter was that some portion of the vocals was getting lost because of aggressive source separation. The drawback of using ANR was that it was not as effective as Spleeter in removing the accompaniment (Tanpura). So we had a tradeoff.
 
@@ -120,7 +120,7 @@ We noticed the following:
 
 **Pune Singers:**
 
-For SM, the voice was loud enough so ANR was working well. But it was not working better than Spleeter. For other Pune Singers ANR is working worse than Spleeter. So for new singers, using Spleeter only was the best. Audacity noise removal is not improving, irrespective of whether we use Spleeter or not. Because of the loud tanpura, we need the aggressive splitting of Spleeter to get the separated vocals.
+For SM, the voice was loud enough so ANR was working well. But it was not working better than Spleeter. For other Pune Singers ANR was working worse than Spleeter. So for new singers, using Spleeter only was the best. Audacity noise removal was not showing improvement, irrespective of whether we used Spleeter or not. Because of the loud tanpura, we need the aggressive splitting of Spleeter to get the separated vocals.
 
 **Durham Singers:**
 
@@ -128,8 +128,8 @@ For Durham singers, low pass filtering followed by noise removal worked well. Af
 
 Steps in ANR:
 
-1. Low pass filter (2400 Hz, 48 dBroll off) using Audacity:
-2. Noise removal:
+1. Low pass filter (2400 Hz, 48 dBroll off) using Audacity
+2. Noise removal
 
 The noise profiles and parameter values chosen are mentioned later. For details on how to use Audacity Noise Removal, check this page: <https://manual.audacityteam.org/man/noise_reduction.html>
 
