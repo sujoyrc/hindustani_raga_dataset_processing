@@ -150,7 +150,7 @@ Based on trial-error and tuning the parameters, the noise profiles and parameter
 | SCh        | 12                        | 4               | 0                                | SCh_Aalap1_Shree – 0 to 4.5s                  | SCh_Aalap2_Bag – 3 min 7.0 s to 3 min 12.3 s |
 
 
-The reason for using different noise profiles for Bageshri was that in Bageshri the tanpura is played in cycles of Sa-Ma instead of Sa-Pa. Hence, the spectra of tanpura in raga Bageshri is different than those in other ragas.
+\* The reason for using different noise profiles for Bageshri was that in Bageshri the tanpura is played in cycles of Sa-Ma instead of Sa-Pa. Hence, the spectra of tanpura in raga Bageshri is different than those in other ragas.
 
 <!-- Using this, we got the source-separated audios, which are stored in the folder Source\_Separated\_Audios under two subfolders:
 
