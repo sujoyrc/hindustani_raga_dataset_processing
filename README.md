@@ -120,11 +120,11 @@ We noticed the following:
 
 **Pune Singers:**
 
-For SM, the voice was loud enough so ANR was working well. But it was not working better than Spleeter. For other Pune Singers ANR was working worse than Spleeter. So for new singers, using Spleeter only was the best. Audacity noise removal was not showing improvement, irrespective of whether we used Spleeter or not. Because of the loud tanpura, we need the aggressive splitting of Spleeter to get the separated vocals.
+For SM, the voice was loud enough so ANR was working well. But it was not working better than Spleeter. For other Pune Singers ANR was working worse than Spleeter. So for Pune singers, using Spleeter only was the best. Audacity noise removal was not showing improvement, irrespective of whether we used Spleeter or not. Because of the loud tanpura, we need the aggressive splitting of Spleeter to get the separated vocals.
 
 **Durham Singers:**
 
-For Durham singers, low pass filtering followed by noise removal worked well. After that, we could use Spleeter to be extra sure or we could do without it as well (the difference was negligible). For CC and AG, ANR only and ANR + Spleeter were working much better than Spleeter only. For SCh the difference is not so significant. The tanpura is soft enough so that all methods give decent pitch contours but ANR is still better than Spleeter.
+For Durham singers, low pass filtering followed by noise removal worked well. After that, we could use Spleeter to try to further improve the source separation or we could do without it as well (the difference was negligible). For CC and AG, ANR only and ANR + Spleeter were working much better than Spleeter only. For SCh the difference is not so significant. The tanpura is soft enough so that all methods give decent pitch contours but ANR is still better than Spleeter.
 
 Steps in ANR:
 
